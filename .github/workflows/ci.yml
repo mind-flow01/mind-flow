@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - name: Install API deps
+        run: |
+          cd apps/api
+          npm ci || npm install
+      - name: Install Web deps
+        run: |
+          cd apps/web
+          npm ci || npm install
+      - name: Build API
+        run: |
+          cd apps/api
+          npm run build
+      - name: Typecheck Web
+        run: |
+          cd apps/web
+          npx tsc --noEmit
+      - name: Test API
+        run: |
+          cd apps/api
+          npm test -- --ci --runInBand
+
+
