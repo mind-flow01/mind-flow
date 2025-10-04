@@ -10,22 +10,22 @@
     "test": "echo 'no unit tests yet'"
   },
   "dependencies": {
-    "next": "14.2.5",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
-    "next-auth": "4.24.7",
-    "@supabase/supabase-js": "2.45.1",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "5.15.20",
     "@mui/material": "5.15.20",
-    "@mui/icons-material": "5.15.20"
+    "@supabase/supabase-js": "2.45.1",
+    "next": "14.2.5",
+    "next-auth": "4.24.7",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
   },
   "devDependencies": {
-    "typescript": "5.5.4",
-    "@types/react": "18.3.3",
     "@types/node": "20.14.10",
+    "@types/react": "18.3.3",
+    "cypress": "13.13.3",
     "eslint": "8.57.0",
     "eslint-config-next": "14.2.5",
-    "cypress": "13.13.3"
+    "typescript": "5.5.4"
   }
 }
-
-
