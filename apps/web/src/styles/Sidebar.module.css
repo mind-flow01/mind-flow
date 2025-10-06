@@ -1,0 +1,73 @@
+/* src/styles/Sidebar.module.css */
+.sidebar {
+  width: 250px;
+  /* Cor principal, baseada no overlay da tela de login */
+  background-color: #004d4d; 
+  color: #ffffff;
+  padding: 20px 0;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+  position: fixed;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.logoContainer {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+.logo {
+  max-width: 150px;
+  height: auto;
+}
+
+.navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigation li {
+  margin-bottom: 5px;
+}
+
+/* Estilo do Link (agora com className no componente Link) */
+.navLink {
+  display: flex;
+  align-items: center;
+  padding: 14px 30px; /* Aumentei um pouco o padding */
+  color: #e0e0e0; /* Um branco suave para o texto padrão */
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+  border-left: 4px solid transparent; /* Borda esquerda para o item ativo */
+}
+
+/* Efeito Hover */
+.navLink:hover {
+  /* Cor de hover do botão de login */
+  background-color: #006666; 
+  color: #ffffff;
+}
+
+/* Estilo do Ícone */
+.icon {
+  font-size: 1.2rem; /* Tamanho do ícone */
+  margin-right: 15px; /* Espaçamento entre o ícone e o texto */
+  flex-shrink: 0;
+}
+
+/* Item Ativo da Navegação */
+.navigation li.active .navLink {
+  /* Cor de ação do botão de login */
+  background-color: #008080;
+  color: #ffffff;
+  font-weight: 600;
+  border-left-color: #38ef7d; /* Um verde brilhante para destacar ainda mais */
+}

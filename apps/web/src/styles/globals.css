@@ -1,0 +1,25 @@
+/* src/styles/globals.css */
+
+/* Reset básico para garantir consistência entre navegadores */
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  line-height: 1.6;
+  font-size: 16px;
+  color: #333; /* Cor de texto padrão */
+  background-color: #f7f9fc; /* Cor de fundo geral, como a do seu layout */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Você pode adicionar outros estilos globais aqui */
