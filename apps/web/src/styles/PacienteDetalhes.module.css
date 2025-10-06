@@ -1,0 +1,227 @@
+/* src/styles/PacienteDetalhes.module.css */
+.patientDetailsPage {
+  /* Estilos gerais da página de detalhes do paciente */
+}
+
+.patientSummary {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+}
+
+.patientAvatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 25px;
+  border: 2px solid #00897b;
+}
+
+.patientInfo {
+  flex-grow: 1;
+}
+
+.patientName {
+  font-size: 24px;
+  color: #333;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.lastSession {
+  font-size: 14px;
+  color: #777;
+}
+
+.summaryActions {
+  display: flex;
+  gap: 15px;
+}
+
+.scheduleButton,
+.editButton {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.scheduleButton {
+  background-color: #00897b;
+  color: #fff;
+}
+
+.scheduleButton:hover {
+  background-color: #00695c;
+}
+
+.editButton {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.editButton:hover {
+  background-color: #bdbdbd;
+}
+
+/* Tabs Navigation */
+.tabs {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.tabItem {
+  padding: 12px 20px;
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  color: #777;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.tabItem:hover {
+  color: #333;
+}
+
+.tabItem.active {
+  color: #00897b;
+  border-bottom-color: #00897b;
+  font-weight: 600;
+}
+
+/* Tab Content */
+.tabContent {
+  background-color: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* Session Card Styles */
+.sessionHistory {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sessionCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  background-color: #fcfcfc;
+  transition: border-color 0.2s ease;
+}
+
+.sessionCard:hover {
+  border-color: #00897b;
+}
+
+.sessionInfo {
+  flex-grow: 1;
+}
+
+.sessionDate {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.sessionType {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.sessionNotesPreview {
+  font-size: 13px;
+  color: #888;
+  max-width: 500px; /* Limita a largura para melhor leitura */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sessionActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sessionStatus {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sessionStatus.concluída {
+  background-color: #e8f5e9; /* Light green */
+  color: #2e7d32; /* Dark green */
+}
+
+.sessionStatus.online {
+  background-color: #e3f2fd; /* Light blue */
+  color: #1976d2; /* Dark blue */
+}
+
+.sessionStatus.agendada {
+  background-color: #fff3e0; /* Light orange */
+  color: #ef6c00; /* Dark orange */
+}
+
+.viewProntuarioButton,
+.addNotesButton {
+  padding: 8px 15px;
+  border: 1px solid #00897b;
+  background-color: #fff;
+  color: #00897b;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.viewProntuarioButton:hover,
+.addNotesButton:hover {
+  background-color: #00897b;
+  color: #fff;
+}
+
+/* Personal Info Section */
+.personalInfoSection h3,
+.attachmentsSection h3,
+.paymentsSection h3 {
+  font-size: 20px;
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+}
+
+.personalInfoSection p {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.personalInfoSection strong {
+  color: #333;
+}
