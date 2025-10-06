@@ -1,0 +1,111 @@
+/* src/styles/ListaPacientes.module.css */
+
+.patientsListPage {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: space-between; /* Alinha itens nas pontas (pesquisa e botão) */
+  align-items: center; /* Centraliza verticalmente */
+  margin-bottom: 20px;
+  gap: 20px; /* Espaçamento entre a barra de pesquisa e o botão */
+}
+
+/* Novo estilo para o campo de pesquisa */
+.searchInput {
+  flex-grow: 1; /* Faz o campo de pesquisa ocupar o espaço disponível */
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  max-width: 400px; /* Limita a largura máxima do campo de pesquisa */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #008080; /* Cor de destaque ao focar */
+  box-shadow: 0 0 0 1px #008080;
+}
+
+.newPatientButton {
+  background-color: #008080; /* Cor de destaque da sua paleta */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0; /* Impede que o botão encolha */
+}
+
+.newPatientButton:hover {
+  background-color: #006666; /* Cor de hover da sua paleta */
+}
+
+.patientList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.patientCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #eee;
+}
+
+.patientCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-color: #008080;
+}
+
+.patientAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #008080;
+  flex-shrink: 0;
+}
+
+.patientInfo {
+  flex-grow: 1;
+}
+
+.patientName {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.lastSession {
+  font-size: 13px;
+  color: #777;
+  margin: 0;
+}
+
+.arrowIcon {
+  font-size: 24px;
+  color: #008080;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
