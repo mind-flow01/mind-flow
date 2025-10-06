@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { FiPlayCircle } from 'react-icons/fi'; // Ícone para o novo botão
 
-// Componentes (assumindo que estão na pasta components)
+// Componentes
 import Header from '@/components/Header';
 import SessionCard from '@/components/SessionCard';
-import Layout from '@/components/Layout'; // Importe seu Layout se estiver usando um
+import Layout from '@/components/Layout';
 
 // Estilos
-import styles from '@/styles/PacienteDetalhes.module.css'; // Supondo que você criou este CSS module
+import styles from '@/styles/PacienteDetalhes.module.css';
 
 // Dados e Tipos
 import { mockPatientsDetails } from '@/lib/mockData';
-// É uma boa prática exportar os tipos do seu arquivo de dados para reutilizá-los
 import type { PatientDetail as Patient, PatientSession } from '@/lib/mockData';
 
 const PatientDetailsPage: React.FC = () => {
   const router = useRouter();
-  // O nome do parâmetro 'patientId' vem do nome do arquivo: [patientId].tsx
   const { patientId } = router.query;
   const [activeTab, setActiveTab] = useState('HistoricoDeSessoes');
 
-  // --- LÓGICA DE CARREGAMENTO E BUSCA DE DADOS ---
-
-  // 1. Enquanto o Next.js não popula o router.query, exibimos um estado de carregamento.
-  // Isso resolve o problema de "paciente não encontrado" no carregamento inicial.
   if (!router.isReady) {
     return (
       <Layout>
@@ -33,10 +28,8 @@ const PatientDetailsPage: React.FC = () => {
     );
   }
 
-  // 2. Com o patientId disponível, buscamos o paciente no nosso array de dados.
   const patient = mockPatientsDetails.find(p => p.id === patientId);
 
-  // 3. Se, mesmo após o carregamento, o paciente não for encontrado, exibimos a mensagem de erro.
   if (!patient) {
     return (
       <Layout>
@@ -47,9 +40,6 @@ const PatientDetailsPage: React.FC = () => {
     );
   }
 
-  // --- FUNÇÕES DE NAVEGAÇÃO E AÇÕES ---
-
-  // Função que navega para a página de prontuário da sessão específica
   const handleViewProntuario = (sessionId: string) => {
     if (patientId) {
       router.push(`/pacientes/${patientId}/sessoes/${sessionId}`);
@@ -57,23 +47,32 @@ const PatientDetailsPage: React.FC = () => {
   };
 
   return (
+
       <div className={styles.patientDetailsPage}>
         <Header title="Detalhes do Paciente" />
 
-        {/* SUMÁRIO DO PACIENTE */}
         <div className={styles.patientSummary}>
           <img src={patient.avatar} alt={patient.name} className={styles.patientAvatar} />
           <div className={styles.patientInfo}>
             <h2 className={styles.patientName}>{patient.name}</h2>
             <p className={styles.lastSession}>Última sessão: {patient.lastSession}</p>
           </div>
+
+          {/* ======================= ÁREA ALTERADA ======================= */}
           <div className={styles.summaryActions}>
-            <button className={styles.scheduleButton}>+ Agendar Nova Sessão</button>
             <button className={styles.editButton}>Editar Dados</button>
+            <button className={styles.scheduleButton}>+ Agendar Nova Sessão</button>
+            
+            {/* NOVO BOTÃO "INICIAR SESSÃO" */}
+            <Link href={`/pacientes/${patientId}/sessoes/live`} className={styles.startButton}>
+              <FiPlayCircle />
+              Iniciar Sessão
+            </Link>
           </div>
+          {/* ============================================================= */}
+
         </div>
 
-        {/* ABAS DE NAVEGAÇÃO */}
         <nav className={styles.tabs}>
           <button
             className={`${styles.tabItem} ${activeTab === 'HistoricoDeSessoes' ? styles.active : ''}`}
@@ -87,10 +86,8 @@ const PatientDetailsPage: React.FC = () => {
           >
             Informações Pessoais
           </button>
-          {/* Outras abas podem ser adicionadas aqui */}
         </nav>
 
-        {/* CONTEÚDO DAS ABAS */}
         <div className={styles.tabContent}>
           {activeTab === 'HistoricoDeSessoes' && (
             <div className={styles.sessionHistory}>
@@ -99,7 +96,6 @@ const PatientDetailsPage: React.FC = () => {
                   key={session.id}
                   date={session.date}
                   type={session.type}
-                  // O campo 'notes' agora é um objeto. Mostramos um resumo do campo 'subjective'.
                   notes={session.notes.subjective.substring(0, 120) + '...'}
                   status={session.status}
                   onViewProntuario={() => handleViewProntuario(session.id)}
@@ -120,7 +116,6 @@ const PatientDetailsPage: React.FC = () => {
           )}
         </div>
       </div>
-    
   );
 };
 

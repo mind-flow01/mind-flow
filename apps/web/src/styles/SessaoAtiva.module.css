@@ -1,0 +1,223 @@
+/* src/styles/SessaoAtiva.module.css */
+
+/* Estrutura Principal */
+.sessionPage {
+  display: flex;
+  height: 100vh;
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  font-family: 'Inter', sans-serif;
+  overflow: hidden;
+}
+
+/* Painel Lateral de Referência */
+.sidebar {
+  width: 320px;
+  background-color: var(--bg-medium);
+  border-right: 1px solid var(--border-light);
+  padding: 2rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.backButton {
+    align-self: flex-start;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+.backButton:hover {
+    color: var(--secondary-color);
+}
+.patientAvatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 1.5rem;
+  border: 4px solid var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+.sidebar h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-dark); /* Usando a nova cor de texto escura */
+}
+.sidebar h2 + p {
+    font-size: 1rem;
+    color: var(--text-medium);
+    margin-bottom: 2rem;
+}
+.sessionInfo {
+    width: 100%;
+    text-align: left;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+}
+.sessionInfo p {
+  font-size: 0.95rem;
+  line-height: 1.8;
+  color: var(--text-medium);
+  margin-bottom: 0.5rem;
+}
+.sessionInfo strong {
+    color: var(--text-dark);
+}
+
+/* Conteúdo Principal à Direita */
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+/* Barra de Controle Superior */
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: var(--bg-medium);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+.timerDisplay {
+  font-size: 2.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dark);
+  min-width: 150px;
+}
+.recordingControls {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+.consent {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-medium);
+}
+.consent input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+.recordButton, .sessionButtonStart, .sessionButtonEnd {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+.recordButton {
+    background-color: var(--bg-medium);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+.recordButton:hover:not(:disabled) {
+    background-color: var(--accent-color);
+    color: var(--light-text);
+    box-shadow: var(--shadow-md);
+}
+.recordButton.recordingActive {
+  background-color: var(--danger-color);
+  color: var(--light-text);
+  border-color: var(--danger-color);
+  animation: pulse-red 1s infinite alternate;
+}
+@keyframes pulse-red {
+    from { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.4); }
+    to { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+.sessionButtonStart {
+  background-color: var(--primary-color);
+  color: var(--light-text);
+}
+.sessionButtonStart:hover:not(:disabled) {
+    background-color: var(--secondary-color);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+.sessionButtonEnd {
+  background-color: var(--danger-color);
+  color: var(--light-text);
+}
+.sessionButtonEnd:hover:not(:disabled) {
+    background-color: var(--danger-color-hover);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+.recordButton:disabled,
+.sessionButtonStart:disabled,
+.sessionButtonEnd:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Área de Anotações */
+.notesArea {
+  flex: 1;
+  background-color: var(--bg-medium);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  display: flex;
+}
+.notesArea textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 1.5rem;
+  font-family: 'Georgia', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  resize: none;
+  background-color: transparent;
+  color: var(--text-dark);
+}
+.notesArea textarea::placeholder {
+    color: var(--text-light);
+}
+.notesArea textarea:focus {
+  outline: none;
+  box-shadow: inset 0 0 0 2px rgba(46, 71, 108, 0.2); 
+}
+.notesArea textarea:disabled {
+    background-color: #f0f0f0;
+    cursor: not-allowed;
+}
+
+/* Centraliza mensagens de carregamento/erro */
+.centeredMessage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-size: 1.5rem;
+    color: var(--text-medium);
+}
