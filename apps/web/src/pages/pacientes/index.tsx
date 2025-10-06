@@ -1,57 +1,45 @@
-
 // src/pages/pacientes/index.tsx
-import React, { useState } from 'react'; // Importar useState
+import React, { useState } from 'react';
 import Link from 'next/link';
-import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 import styles from '../../styles/ListaPacientes.module.css';
-
-// Interface para tipagem dos dados do paciente (simplificada para a lista)
-interface PatientListItem {
-  id: string;
-  name: string;
-  avatar: string;
-  lastSession: string;
-}
-
-const mockPatients: PatientListItem[] = [
-  { id: 'abel-ferreira', name: 'Abel Ferreira', avatar: '/abel.jpg', lastSession: '27/11/2021' },
-  { id: 'joao-souza', name: 'João Souza', avatar: '/patient_male_avatar.jpg', lastSession: '01/11/2023' },
-  { id: 'maria-oliveira', name: 'Maria Oliveira', avatar: '/patient_female_avatar.jpg', lastSession: '15/09/2023' },
-  { id: 'carlos-pereira', name: 'Carlos Pereira', avatar: '/patient_male_avatar.jpg', lastSession: '10/10/2023' },
-  { id: 'sofia-fernandes', name: 'Sofia Fernandes', avatar: '/patient_female_avatar.jpg', lastSession: '05/11/2023' },
-];
+import { mockPatientsList } from '../../lib/mockData';
+import { FiPlus } from 'react-icons/fi';
 
 const PatientsListPage: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para o termo de pesquisa
+  const [searchTerm, setSearchTerm] = useState('');
 
-  // Lógica para filtrar os pacientes com base no termo de pesquisa
-  const filteredPatients = mockPatients.filter(patient =>
+  const filteredPatients = mockPatientsList.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    <Layout>
-      <div className={styles.patientsListPage}>
-        <Header title="Meus Pacientes" />
+    // Este é o contêiner principal da página (Borda Azul)
+    <div className={styles.patientsListPage}>
+      <Header title="Meus Pacientes" />
 
-        <div className={styles.actionsContainer}>
-          {/* Campo de pesquisa */}
-          <input
-            type="text"
-            placeholder="Pesquisar pacientes..."
-            className={styles.searchInput}
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          {/* Botão de Adicionar Novo Paciente */}
-          <Link href="/pacientes/novo" className={styles.newPatientButton}>
-            + Adicionar Novo Paciente
-          </Link>
-        </div>
+      <div className={styles.actionsContainer}>
+        <input
+          type="text"
+          placeholder="Pesquisar pacientes..."
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <Link href="/pacientes/novo" className={styles.newPatientButton}>
+          <FiPlus className={styles.buttonIcon} />
+          <span>Adicionar Novo Paciente</span>
+        </Link>
+      </div>
 
-        <div className={styles.patientList}>
-          {filteredPatients.map(patient => ( // Renderiza os pacientes filtrados
+      {/*
+        ESTRUTURA CORRETA:
+        O .patientList (que deveria ter a borda verde) é um filho DIRETO do .patientsListPage.
+        NÃO deve haver um <div> extra envolvendo este .patientList.
+      */}
+      <div className={styles.patientList}>
+        {filteredPatients.length > 0 ? (
+          filteredPatients.map(patient => (
             <Link key={patient.id} href={`/pacientes/${patient.id}`} className={styles.patientCard}>
               <img src={patient.avatar} alt={patient.name} className={styles.patientAvatar} />
               <div className={styles.patientInfo}>
@@ -60,10 +48,12 @@ const PatientsListPage: React.FC = () => {
               </div>
               <span className={styles.arrowIcon}>→</span>
             </Link>
-          ))}
-        </div>
+          ))
+        ) : (
+          <p className={styles.noResults}>Nenhum paciente encontrado com "<strong>{searchTerm}</strong>".</p>
+        )}
       </div>
-    </Layout>
+    </div>
   );
 };
 
