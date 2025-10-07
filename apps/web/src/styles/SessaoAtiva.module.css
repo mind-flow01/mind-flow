@@ -221,3 +221,97 @@
     font-size: 1.5rem;
     color: var(--text-medium);
 }
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES (MAX 1024px) ========= */
+/* ============================================== */
+
+@media (max-width: 1024px) {
+    /* Estrutura Principal: Permite rolagem vertical */
+    .sessionPage {
+        flex-direction: column; /* Não é estritamente necessário, mas bom para garantir */
+        height: auto; /* Permite que a página role */
+        overflow-y: auto; /* Permite rolagem */
+    }
+
+    /* Painel Lateral de Referência: Removido ou empilhado no topo */
+    .sidebar {
+        width: 100%; /* Ocupa a largura total */
+        height: auto; /* Não fixa a altura em 100vh */
+        border-right: none;
+        border-bottom: 1px solid var(--border-light); /* Adiciona uma linha de separação */
+        padding: 1.5rem; /* Reduz o padding */
+    }
+
+    /* Elementos do Sidebar (para centralizar ou ajustar) */
+    .backButton {
+        align-self: center; /* Centraliza o botão Voltar */
+        margin-bottom: 1rem;
+    }
+    .patientAvatar {
+        width: 90px;
+        height: 90px;
+        margin-bottom: 1rem;
+    }
+    .sidebar h2 {
+        font-size: 1.6rem;
+    }
+    .sidebar h2 + p {
+        margin-bottom: 1rem;
+    }
+    .sessionInfo {
+        padding-top: 1rem;
+    }
+    
+    /* Conteúdo Principal */
+    .mainContent {
+        padding: 1rem; /* Reduz o padding geral */
+        height: auto;
+    }
+    
+    /* Barra de Controle Superior */
+    .controlsBar {
+        flex-direction: column; /* Empilha os controles verticalmente */
+        padding: 1rem;
+        margin-bottom: 1rem;
+        align-items: flex-start; /* Alinha tudo à esquerda */
+        gap: 1rem;
+    }
+
+    .timerDisplay {
+        font-size: 2rem; /* Reduz o tamanho do timer */
+        width: 100%;
+        text-align: left;
+    }
+
+    .recordingControls {
+        width: 100%;
+        flex-wrap: wrap; /* Permite que os botões quebrem a linha */
+        gap: 0.75rem;
+    }
+
+    /* Botões de Ação: Ocupam a largura total em mobile */
+    .recordButton, .sessionButtonStart, .sessionButtonEnd {
+        flex-grow: 1; 
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+        justify-content: center; /* Centraliza o ícone e o texto */
+    }
+
+    .consent {
+        order: 3; /* Move o consentimento para o final dos controles */
+        width: 100%;
+        justify-content: center;
+        font-size: 0.9rem;
+    }
+
+    /* Área de Anotações */
+    .notesArea {
+        height: 70vh; /* Define uma altura fixa para a área de anotações, mas com rolagem */
+        min-height: 400px;
+    }
+    .notesArea textarea {
+        font-size: 1rem; /* Reduz um pouco o tamanho do texto para digitação */
+        padding: 1rem;
+    }
+}
