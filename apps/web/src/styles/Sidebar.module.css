@@ -22,7 +22,7 @@
 }
 
 .logo {
-  max-width: 150px;
+  max-width: 200px;
   height: auto;
 }
 
@@ -70,4 +70,84 @@
   color: #ffffff;
   font-weight: 600;
   border-left-color: #38ef7d; /* Um verde brilhante para destacar ainda mais */
+}
+
+/* src/styles/Sidebar.module.css */
+/* ... (Seus estilos existentes) ... */
+
+/* Classe para o Sidebar quando está escondido (padrão em mobile/tablet) */
+.sidebar {
+  /* ... (Seus estilos existentes) ... */
+  transition: transform 0.3s ease-in-out; /* Adiciona a transição para o deslize */
+}
+
+/* Classe 'open' adicionada pelo React */
+.sidebar.open {
+  transform: translateX(0);
+}
+
+/* Novo estilo para o botão hambúrguer (escondido por padrão) */
+.hamburgerButton {
+    display: none; /* Esconde o botão por padrão em desktop */
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1010; /* Acima do Sidebar e do Overlay */
+    background: #00897b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 24px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Novo estilo para o Overlay (fundo escuro) */
+.sidebarOverlay {
+    display: none; /* Esconde por padrão */
+}
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES (MÁXIMO 1024px) ========= */
+/* ============================================== */
+
+@media (max-width: 1024px) {
+    /* 1. Esconde o Sidebar por padrão (desliza para fora da tela) */
+    .sidebar {
+        /* Desloca o menu para a esquerda pelo seu próprio tamanho (250px) */
+        transform: translateX(-250px); 
+        box-shadow: 4px 0 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* 2. Mostra o botão hambúrguer */
+    .hamburgerButton {
+        display: flex; /* Torna o botão visível */
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* 3. Estilo do Overlay (fundo escuro) */
+    .sidebarOverlay {
+        display: block; /* Visível apenas quando necessário */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6); /* Fundo semi-transparente */
+        z-index: 999; /* Fica entre o conteúdo e o menu */
+    }
+    
+    /* 4. Ocupa o restante da tela (Opcional, dependendo de como está o Layout)
+       Se você tiver um layout principal, ele precisará de um padding para o botão.
+       Como não vi o layout, esse ajuste deve ser feito no componente que 
+       envolve todo o conteúdo da página. Por exemplo, se o conteúdo principal
+       estiver envolto por um .mainContent:
+       
+       .mainContent {
+           padding-left: 0;  // Remove o padding para o sidebar de desktop
+           padding-top: 60px; // Adiciona espaço para o botão hambúrguer
+       } 
+    */
 }

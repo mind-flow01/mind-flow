@@ -130,4 +130,74 @@
     color: #1E293B;
     margin-bottom: 1rem;
 }
-/* ... outros estilos para o painel de IA ... */
+
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES ========= */
+/* ============================================== */
+
+@media (max-width: 1024px) {
+    /* Main Content: Reduz o padding lateral em telas menores */
+    .mainContent {
+        padding: 1.5rem; /* Ajusta o padding geral para 24px */
+    }
+
+    /* Header: Empilha o título e as ações em telas menores */
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem; /* Espaço entre título e ações */
+    }
+
+    .actions {
+        width: 100%;
+        gap: 0.5rem;
+    }
+    
+    /* Botões: Fazem os botões ocuparem metade da largura cada */
+    .btn, .btnSecondary {
+        flex-grow: 1; 
+        justify-content: center; /* Centraliza o ícone e o texto */
+        padding: 0.75rem 1rem; /* Aumenta um pouco o padding para toque */
+        font-size: 0.9rem;
+    }
+
+    /* Metadata Card: Empilha as informações da sessão */
+    .metadataCard {
+        flex-direction: column;
+        gap: 1.5rem; /* Reduz o espaçamento vertical entre os itens */
+        padding: 1rem;
+    }
+
+    /* Content Layout: Muda de 2 colunas para 1 */
+    .contentLayout {
+        grid-template-columns: 1fr; /* Muda para uma única coluna */
+        gap: 1.5rem; /* Reduz o espaçamento entre as seções */
+    }
+    
+    /* Panel/Coluna Principal */
+    .noteColumn {
+        padding: 1.5rem;
+    }
+    
+    /* Painel AI: O painel lateral agora fica abaixo da coluna principal */
+    .aiPanel {
+        padding: 1.5rem;
+        /* Remove o align-self para que ele ocupe a largura total */
+        align-self: auto;
+    }
+    
+    .aiPanel h3 {
+        font-size: 1rem; /* Reduz o tamanho do título da IA */
+    }
+
+    /* SOAP Sections: Ajustes finos */
+    .soapSection {
+        margin-bottom: 1.5rem;
+    }
+    
+    .soapSection h3 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+}

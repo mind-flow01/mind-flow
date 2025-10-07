@@ -253,3 +253,168 @@
 .startButton:hover {
   background-color: #2d3748; /* Mesma cor hover do .scheduleButton */
 }
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS ========= */
+/* ============================================== */
+
+@media (max-width: 1024px) {
+    /* Diminui um pouco o padding geral e o espaçamento */
+    .patientSummary {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .patientAvatar {
+        width: 70px;
+        height: 70px;
+        margin-right: 20px;
+    }
+
+    .patientName {
+        font-size: 22px; /* Reduz um pouco o título */
+    }
+
+    .lastSession {
+        font-size: 13px;
+    }
+
+    /* Reduz o tamanho dos botões de ação */
+    .scheduleButton,
+    .editButton,
+    .startButton {
+        padding: 8px 16px;
+        font-size: 14px;
+        gap: 6px;
+    }
+    
+    /* Reduz o padding das abas */
+    .tabItem {
+        padding: 10px 15px;
+        font-size: 15px;
+    }
+    
+    .tabContent {
+        padding: 20px;
+    }
+
+    /* Ajustes para o Session Card */
+    .sessionCard {
+        padding: 15px;
+    }
+
+    /* Mantém as informações da sessão em uma coluna em tablets */
+    .sessionNotesPreview {
+        max-width: 300px; /* Limita um pouco mais para dar espaço aos botões */
+    }
+    
+    .viewProntuarioButton,
+    .addNotesButton {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
+}
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA CELULARES (MÁXIMO 768px) ========= */
+/* ============================================== */
+
+@media (max-width: 768px) {
+    /* Resumo do Paciente: Empilha as ações e centraliza as informações */
+    .patientSummary {
+        flex-direction: column; /* Coloca os elementos um abaixo do outro */
+        align-items: flex-start; /* Alinha tudo à esquerda */
+        padding: 15px;
+    }
+
+    .patientAvatar {
+        width: 60px;
+        height: 60px;
+        margin-right: 15px;
+        margin-bottom: 15px; /* Adiciona espaço abaixo do avatar */
+    }
+
+    .patientInfo {
+        width: 100%; /* Ocupa a largura total */
+        margin-bottom: 15px;
+    }
+
+    .patientName {
+        font-size: 20px;
+    }
+
+    .summaryActions {
+        width: 100%;
+        flex-wrap: wrap; /* Quebra para a próxima linha se não couber */
+        gap: 10px; /* Reduz o espaçamento entre botões */
+    }
+
+    /* Os botões de ação podem ocupar a largura total ou metade para telas muito pequenas */
+    .scheduleButton,
+    .editButton,
+    .startButton {
+        flex-grow: 1; /* Faz os botões tentarem ocupar o máximo de espaço */
+        text-align: center;
+        justify-content: center; /* Centraliza o conteúdo (ícone e texto) */
+        padding: 10px; /* Aumenta um pouco o padding para facilitar o clique */
+    }
+    
+    /* Tabs: Ocupa a largura total para melhor clique */
+    .tabs {
+        gap: 0;
+        margin-bottom: 15px;
+        /* Para telas muito pequenas, pode-se usar flex-wrap se houver muitas abas,
+           mas neste caso, apenas duas, então display flex está ok. */
+    }
+    
+    .tabItem {
+        flex-grow: 1; /* Faz as abas ocuparem o espaço igualmente */
+        text-align: center;
+        font-size: 14px;
+        padding: 10px 5px;
+    }
+    
+    /* Session Card: Empilha as informações e ações */
+    .sessionCard {
+        flex-direction: column; /* Informações em cima, ações em baixo */
+        align-items: flex-start;
+        padding: 15px;
+        gap: 10px; /* Espaço entre info e ações */
+    }
+
+    .sessionInfo {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+
+    .sessionNotesPreview {
+        max-width: 100%; /* Ocupa a largura total */
+        white-space: normal; /* Permite a quebra de linha para não cortar o texto */
+        overflow: visible;
+        text-overflow: clip;
+        font-size: 12px;
+    }
+
+    .sessionActions {
+        width: 100%;
+        justify-content: space-between; /* Distribui o status e os botões */
+        flex-wrap: wrap; /* Permite que os botões quebrem a linha se necessário */
+        gap: 10px;
+    }
+
+    .sessionStatus {
+        order: 1; /* Coloca o status à esquerda */
+    }
+
+    .viewProntuarioButton,
+    .addNotesButton {
+        order: 2; /* Mantém os botões à direita (ou quebram a linha) */
+        flex-grow: 1; /* Ocupa o espaço disponível para melhor toque */
+        padding: 10px;
+    }
+
+    /* Informações Pessoais */
+    .personalInfoSection p {
+        font-size: 15px;
+    }
+}
