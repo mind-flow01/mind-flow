@@ -1,209 +1,241 @@
 /* src/styles/Login.module.css */
 
 .container {
-  display: flex;
-  min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  overflow: hidden; /* Garante que a imagem de fundo não cause scroll extra */
+    display: flex;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden; 
 }
 
-/* --- Lado Esquerdo (Imagem de Fundo) --- */
+/* --- Lado Esquerdo (Imagem de Fundo - Desktop Only) --- */
 .leftPanel {
-  width: 50%;
-  background-image: url('/uso_real.png'); /* <<--- ATUALIZE ESTE CAMINHO PARA A SUA IMAGEM */
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 4rem;
-  color: white; /* Garante que o texto seja legível sobre a imagem */
+    width: 50%;
+    background-image: url('/uso_real.png'); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    color: white;
+    transition: width 0.3s ease;
 }
 
-/* Camada de sobreposição para melhorar a legibilidade do texto na imagem */
+/* Camada de sobreposição */
 .overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 77, 77, 0.6); /* Um tom de verde-azulado escuro e transparente */
-  z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 77, 77, 0.75); 
+    z-index: 1;
 }
 
 .leftPanelContent {
-  position: relative;
-  z-index: 2; /* Garante que o conteúdo fique acima da sobreposição */
-}
-
-.brandContainer {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
-/* Estilo para a logo, se você usar uma imagem */
-.logo {
-  margin-right: 1rem;
-}
-
-.brandTitle {
-  font-size: 2.5rem;
-  font-weight: bold;
+    position: relative;
+    z-index: 2;
 }
 
 .brandSubtitle {
-  font-size: 1.75rem;
-  font-weight: 500;
-  max-width: 400px;
+    font-size: 2rem; 
+    font-weight: 600;
+    line-height: 1.4;
+    max-width: 450px;
 }
 
 /* --- Lado Direito (Formulário) --- */
 .rightPanel {
-  width: 50%;
-  background-color: #f7fafc; /* Um cinza bem claro */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 3rem;
+    width: 50%; /* Metade da tela em desktop */
+    background-color: #f7fafc; 
+    display: flex;
+    align-items: center; /* Centraliza verticalmente o formWrapper */
+    justify-content: center;
+    padding: 3rem;
+    transition: width 0.3s ease;
 }
 
 .formWrapper {
-  width: 100%;
-  max-width: 420px;
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem; /* Padding interno em desktop */
+    background-color: white; 
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(45, 55, 72, 0.08); /* Sombra mais forte */
+}
+
+.brandContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* CENTRALIZA A LOGO */
+    margin-bottom: 2rem;
 }
 
 .formWrapper h3 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d3748;
-  margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .formWrapper p {
-  color: #718096;
-  margin-bottom: 2rem;
+    color: #718096;
+    margin-bottom: 2rem;
+    text-align: center;
 }
 
 .inputGroup {
-  margin-bottom: 1.25rem;
+    margin-bottom: 1.25rem;
 }
 
 .inputGroup label {
-  display: block;
-  font-weight: bold;
-  color: #4a5568;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
+    display: block;
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
 }
 
 .inputField {
-  width: 100%;
-  padding: 0.9rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.375rem;
-  font-size: 1rem;
+    width: 100%;
+    padding: 1rem 1rem; 
+    border: 1px solid #e2e8f0; 
+    border-radius: 8px; 
+    font-size: 1rem;
+    transition: border-color 0.2s;
 }
 
 .inputField:focus {
-  outline: none;
-  border-color: #3f6e80; /* Azul acinzentado da logo */
-  box-shadow: 0 0 0 1px #3f6e80;
+    outline: none;
+    border-color: #008080; 
+    box-shadow: 0 0 0 1px #008080; 
 }
 
 .optionsRow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  font-size: 0.875rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem; 
+    font-size: 0.875rem;
 }
 
 .checkboxLabel {
-  display: flex;
-  align-items: center;
-  color: #4a5568;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    color: #4a5568;
+    cursor: pointer;
 }
 
 .checkboxLabel input {
-  margin-right: 0.5rem;
+    margin-right: 0.5rem;
+    /* A cor do checkbox foi ajustada para o padrão verde/teal */
+    accent-color: #008080; 
 }
 
 .forgotPasswordLink {
-  color: #008080; /* Mantido um tom de teal da logo */
-  font-weight: bold;
-  text-decoration: none;
+    color: #008080; 
+    font-weight: 600;
+    text-decoration: none;
 }
 
 .forgotPasswordLink:hover {
-  text-decoration: underline;
+    text-decoration: underline;
 }
 
 .submitButton {
-  width: 100%;
-  background-color: #008080; /* Um tom de verde-azulado da logo */
-  color: white;
-  font-weight: bold;
-  padding: 0.9rem;
-  border: none;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.2s;
+    width: 100%;
+    background-color: #008080; 
+    color: white;
+    font-weight: 700;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px; 
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 10px rgba(0, 128, 128, 0.2); 
 }
 
 .submitButton:hover {
-  background-color: #006666; /* Tom mais escuro no hover */
+    background-color: #006666; 
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(0, 128, 128, 0.3);
 }
 
+/* Remove o divider (OU CONTINUE COM) */
 .divider {
-  display: flex;
-  align-items: center;
-  text-align: center;
-  color: #a0aec0;
-  margin: 1.5rem 0;
-  font-size: 0.8rem;
+    display: none; 
 }
 
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid #cbd5e0;
-}
 
-.divider:not(:empty)::before {
-  margin-right: .5em;
-}
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES (MAX 1024px) ========= */
+/* ============================================== */
 
-.divider:not(:empty)::after {
-  margin-left: .5em;
-}
+@media (max-width: 1024px) {
+    /* Oculta o painel lateral */
+    .leftPanel {
+        display: none; 
+    }
+    
+    /* Painel Direito ocupa 100% da tela */
+    .rightPanel {
+        width: 100%; 
+        min-height: 100vh;
+        padding: 1.5rem; 
+        align-items: center; /* Centraliza o formulário na tela */
+        background-color: #f7fafc; 
+    }
 
-.googleButton {
-  width: 100%;
-  background-color: white;
-  color: #2d3748;
-  font-weight: bold;
-  padding: 0.9rem;
-  border: 1px solid #cbd5e0;
-  border-radius: 0.375rem;
-  cursor: pointer;
-  font-size: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
-}
+    .formWrapper {
+        width: 100%;
+        max-width: 400px; /* Largura ligeiramente reduzida para mobile */
+        margin: auto;
+        padding: 2rem; 
+        box-shadow: 0 5px 15px rgba(45, 55, 72, 0.05);
+        border: none;
+    }
+    
+    /* Otimização máxima para celulares pequenos */
+    @media (max-width: 600px) {
+        .formWrapper {
+            max-width: 100%;
+            padding: 1.5rem 1rem; 
+            margin-top: 2rem; 
+            margin-bottom: 2rem;
+        }
+        
+        .rightPanel {
+            padding: 0.5rem; 
+        }
 
-.googleButton:hover {
-  background-color: #f7fafc;
-}
+        .formWrapper h3 {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+        }
 
-.googleIcon {
-  width: 20px;
-  height: 20px;
-  margin-right: 0.75rem;
+        .formWrapper p {
+            margin-bottom: 1.5rem; 
+            font-size: 0.9rem;
+        }
+        
+        .inputGroup {
+            margin-bottom: 1rem; 
+        }
+        
+        .optionsRow {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem; 
+        }
+
+        .submitButton {
+            padding: 0.9rem; 
+        }
+
+
+    }
 }
