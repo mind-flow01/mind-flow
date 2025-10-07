@@ -6,16 +6,18 @@ interface UserSchema {
     password: string;
     name: string;
     created_at: Date;
+    updatedAt: Date;
 }
 
 export class User {
-    props: UserSchema;
-    _id: string;
+    private props: UserSchema;
+    private _id: string;
 
-    constructor(props: Replace<UserSchema, {created_at?: Date}>, id?: string) {
+    constructor(props: Replace<UserSchema, {created_at?: Date,  updatedAt?: Date }>, id?: string) {
         this.props = {
             ...props,
             created_at: props.created_at || new Date(),
+            updatedAt: props.updatedAt || new Date(),
         }
         this._id = id || randomUUID();
     }
@@ -50,6 +52,9 @@ export class User {
 
     get created_at(): Date {
         return this.props.created_at;
+    }
+    get updatedAt(): Date {
+        return this.props.updatedAt;
     }
 
 }
