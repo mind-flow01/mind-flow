@@ -1,5 +1,16 @@
+import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
+
+
 export class CreateUserBody {
- email: string;
- name: string;
- password: string;
+    @IsNotEmpty()
+    @IsString()
+    @IsEmail()
+    email: string;
+    @IsNotEmpty()
+    @IsString()
+    name: string;
+    @IsNotEmpty()
+    @IsString()
+    @MinLength(6)
+    password: string;
 }
