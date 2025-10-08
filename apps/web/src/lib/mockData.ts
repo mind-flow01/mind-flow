@@ -40,19 +40,19 @@ export interface PatientDetail {
 
 // --- Dados Mockados ---
 export const mockPatientsList: PatientListItem[] = [
-  { id: 'ana-silva', name: 'Ana Silva', avatar: '/ana_silva_avatar.jpg', lastSession: '25/10/2023' },
+  { id: 'ana-silva', name: 'Ana Silva', avatar: '/depoimentos/psicologa.png', lastSession: '25/10/2023' },
   { id: 'abel-ferreira', name: 'Abel Ferreira', avatar: '/abel.jpg', lastSession: '27/11/2021' },
-  { id: 'joao-souza', name: 'João Souza', avatar: '/patient_male_avatar.jpg', lastSession: '01/11/2023' },
-  { id: 'maria-oliveira', name: 'Maria Oliveira', avatar: '/patient_female_avatar.jpg', lastSession: '15/09/2023' },
-  { id: 'carlos-pereira', name: 'Carlos Pereira', avatar: '/patient_male_avatar.jpg', lastSession: '10/10/2023' },
-  { id: 'sofia-fernandes', name: 'Sofia Fernandes', avatar: '/patient_female_avatar.jpg', lastSession: '05/11/2023' },
+  { id: 'joao-souza', name: 'João Souza', avatar: '/depoimentos/psicologo1.png', lastSession: '01/11/2023' },
+  { id: 'maria-oliveira', name: 'Maria Oliveira', avatar: '/depoimentos/psicologa2.png', lastSession: '15/09/2023' },
+  { id: 'carlos-pereira', name: 'Carlos Pereira', avatar: '/depoimentos/psicologo2.png', lastSession: '10/10/2023' },
+  { id: 'sofia-fernandes', name: 'Sofia Fernandes', avatar: '/depoimentos/psicologa3.png', lastSession: '05/11/2023' },
 ];
 
 export const mockPatientsDetails: PatientDetail[] = [
   {
     id: 'ana-silva',
     name: "Ana Silva",
-    avatar: "/ana_silva_avatar.jpg",
+    avatar: "/depoimentos/psicologa.png",
     lastSession: "25/10/2023",
     personalInfo: {
       email: "ana.silva@email.com",
@@ -126,7 +126,7 @@ export const mockPatientsDetails: PatientDetail[] = [
   {
     id: 'joao-souza',
     name: "João Souza",
-    avatar: "/patient_male_avatar.jpg",
+    avatar: "/depoimentos/psicologo1.png",
     lastSession: "01/11/2023",
     personalInfo: {
       email: "joao.souza@email.com",
