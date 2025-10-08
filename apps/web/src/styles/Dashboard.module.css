@@ -38,15 +38,36 @@
 }
 
 .sidebarNav li.active a {
-  background-color: #007aff; /* Destaque azul para o item ativo */
+  background-color: #007aff; 
   color: white;
-  padding-left: 10px; /* Pequeno recuo para o item ativo */
+  padding-left: 10px; 
 }
 
-/* Área de conteúdo principal */
 .mainContent {
-  flex-grow: 1; /* Faz esta área ocupar todo o espaço restante */
+  flex-grow: 1; 
   padding: 32px;
+}
+
+.btnPrimary {
+  background-color: #4CAF50; 
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btnPrimary:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+}
+
+.btnPrimary:active {
+  background-color: #3e8e41;
+  transform: translateY(0);
 }
 
 .mainHeader {

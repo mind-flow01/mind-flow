@@ -1,0 +1,37 @@
+.container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f7f9fc; /* Fundo geral */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 30px;
+    /* Margem para não colidir com o cabeçalho se houver um fixo */
+    
+    /* === ESSA É A PROPRIEDADE QUE COMPENSA O SIDEBAR EM DESKTOP === */
+    margin-left: 280px; /* Largura da sidebar + padding extra */
+    
+    /* Adiciona box-sizing para garantir que padding e margin não causem overflow */
+    box-sizing: border-box; 
+    /* Adiciona transição para suavizar a mudança de layout */
+    transition: margin-left 0.3s ease-in-out;
+}
+
+
+/* ============================================== */
+/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES (MÁXIMO 1024px) ========= */
+/* ============================================== */
+
+@media (max-width: 1024px) {
+    .content {
+        /* CORREÇÃO PRINCIPAL: Zera a margem que estava empurrando o conteúdo */
+        margin-left: 0; 
+        
+        /* Ajusta o padding superior para acomodar o botão hambúrguer fixo */
+        /* O botão está em 'top: 15px' e tem uns 44px de altura, então 80px é seguro. */
+        padding-top: 80px; 
+        padding-right: 20px; /* Reduz o padding lateral em mobile/tablet */
+        padding-left: 20px; 
+    }
+}

@@ -1,0 +1,135 @@
+/* src/styles/ListaPacientes.module.css */
+
+.patientsListPage {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  width: 100%; /* Garante que o container ocupe toda a largura disponível */
+  
+}
+
+.actionsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.searchInput {
+  flex-grow: 1;
+  padding: 10px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #008080;
+  box-shadow: 0 0 0 1px #008080;
+}
+
+.newPatientButton {
+  background-color: #008080;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.newPatientButton:hover {
+  background-color: #006666;
+}
+
+.buttonIcon {
+  font-size: 1.1em;
+}
+
+.patientList {
+  display: grid;
+  gap: 25px; 
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  width: 100%; /* Garantindo que o grid também ocupe 100% */
+}
+
+.patientCard {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #eee;
+}
+
+.patientCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-color: #008080;
+}
+
+.patientAvatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #008080;
+  flex-shrink: 0;
+}
+
+.patientInfo {
+  flex-grow: 1;
+}
+
+.patientName {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 5px 0;
+  font-weight: 600;
+}
+
+.lastSession {
+  font-size: 13px;
+  color: #777;
+  margin: 0;
+}
+
+.arrowIcon {
+  font-size: 24px;
+  color: #008080;
+  margin-left: 15px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.patientCard:hover .arrowIcon {
+  transform: translateX(5px);
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #777;
+  font-size: 16px;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+
