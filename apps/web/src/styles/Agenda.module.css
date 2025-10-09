@@ -1,0 +1,250 @@
+Estilos específicos para a página de Agenda
+
+.agendaContainer {
+  padding: 24px;
+  background-color: #fafafa;
+  min-height: 100vh;
+}
+
+.headerSection {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 16px;
+}
+
+.viewButtons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.viewButton {
+  min-width: 80px;
+  font-size: 0.875rem;
+  text-transform: none;
+  border-radius: 8px;
+}
+
+.dateNavigation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.scheduleButton {
+  background-color: #20B2AA;
+  color: white;
+  text-transform: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+}
+
+.scheduleButton:hover {
+  background-color: #1A9B94;
+}
+
+.calendarGrid {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.timeAxis {
+  border-right: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.timeSlot {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+.dayHeader {
+  height: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+}
+
+.dayHeader:last-child {
+  border-right: none;
+}
+
+.dayName {
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.dayDate {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.appointmentsContainer {
+  position: relative;
+  height: 600px;
+}
+
+.gridLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: #e5e7eb;
+  z-index: 1;
+}
+
+.dayColumn {
+  position: absolute;
+  height: 100%;
+  border-right: 1px solid #e5e7eb;
+  z-index: 1;
+}
+
+.dayColumn:last-child {
+  border-right: none;
+}
+
+.appointmentCard {
+  position: absolute;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 8px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-left: 4px solid;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease;
+}
+
+.appointmentCard:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.appointmentCard.confirmed {
+  border-left-color: #10b981;
+}
+
+.appointmentCard.pending {
+  border-left-color: #f59e0b;
+}
+
+.appointmentTime {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 4px;
+}
+
+.appointmentPatient {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 2px;
+  color: #374151;
+}
+
+.appointmentType {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.appointmentStatus {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.statusChip {
+  font-size: 0.65rem;
+  height: 20px;
+  padding: 0 8px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .agendaContainer {
+    padding: 16px;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+  
+  .viewButtons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .viewButton {
+    min-width: 60px;
+    font-size: 0.75rem;
+  }
+  
+  .dateNavigation {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .scheduleButton {
+    width: 100%;
+    margin-top: 8px;
+  }
+  
+  .appointmentCard {
+    font-size: 0.75rem;
+  }
+  
+  .appointmentPatient {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .agendaContainer {
+    padding: 12px;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+  }
+  
+  .appointmentsContainer {
+    height: 500px;
+  }
+  
+  .timeSlot {
+    height: 50px;
+    font-size: 0.75rem;
+  }
+  
+  .dayHeader {
+    height: 50px;
+  }
+  
+  .dayName {
+    font-size: 0.75rem;
+  }
+  
+  .dayDate {
+    font-size: 0.65rem;
+  }
+}
