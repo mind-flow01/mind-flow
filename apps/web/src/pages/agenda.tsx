@@ -24,60 +24,111 @@ import {
 } from '@mui/icons-material';
 import styles from '../styles/Agenda.module.css';
 
-// Mock data para os agendamentos (agora com category e tags)
-const mockAppointments = [
+const Agenda: React.FC = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const mockAppointments = [
   {
     id: 1,
     time: '10:00 - 11:00',
+    startTime: 10, // Hora em formato numérico
+    endTime: 11,   // Hora em formato numérico
     patient: 'Beatriz Costa',
     type: 'Terapia Online',
     status: 'CONFIRMADO',
     statusColor: 'success',
-    day: 0, // Segunda-feira (0 = seg)
-    startTime: 10,
-    endTime: 11,
+    dataDaConsulta: new Date(Date.now() + 86400000 * 1).toISOString(), // 1 dia a partir de agora
     category: 'Consulta inicial',
     tags: ['online', 'nova'],
   },
   {
     id: 2,
     time: '14:00 - 15:00',
+    startTime: 14, // Hora em formato numérico
+    endTime: 15,   // Hora em formato numérico
     patient: 'Beatiiz Costa',
     type: 'Terapia Online',
     status: 'CONFIRMADO',
     statusColor: 'success',
-    day: 2, // Quarta-feira
-    startTime: 14,
-    endTime: 15,
+    dataDaConsulta: new Date(Date.now() + 86400000 * 3).toISOString(), // 3 dias a partir de agora
     category: 'Acompanhamento',
     tags: ['retorno'],
   },
   {
     id: 3,
     time: '14:00 - 15:00',
-    patient: 'Abel Ferrerira',
+    startTime: 14, // Hora em formato numérico
+    endTime: 15,   // Hora em formato numérico
+    patient: 'Abel Ferreira',
     type: 'Terapia Cognitivo-Comportamental',
     status: 'A CONFIRMAR',
     statusColor: 'warning',
-    day: 5, // Sábado
-    startTime: 14,
-    endTime: 15,
+    dataDaConsulta: new Date(Date.now() + 86400000 * 5).toISOString(), // 5 dias a partir de agora
     category: 'Avaliação',
     tags: ['presencial', 'avaliacao'],
   },
+  {
+    id: 4,
+    time: '09:00 - 10:00',
+    startTime: 9,  // Hora em formato numérico
+    endTime: 10,   // Hora em formato numérico
+    patient: 'Carlos Silva',
+    type: 'Terapia de Grupo',
+    status: 'CONFIRMADO',
+    statusColor: 'success',
+    dataDaConsulta: new Date(Date.now() + 86400000 * 7).toISOString(), // 7 dias a partir de agora
+    category: 'Consulta de Grupo',
+    tags: ['grupo', 'presencial'],
+  },
+  {
+    id: 5,
+    time: '16:00 - 17:00',
+    startTime: 16, // Hora em formato numérico
+    endTime: 17,   // Hora em formato numérico
+    patient: 'Maria Oliveira',
+    type: 'Terapia Online',
+    status: 'A CONFIRMAR',
+    statusColor: 'warning',
+    dataDaConsulta: new Date(Date.now() + 86400000 * 10).toISOString(), // 10 dias a partir de agora
+    category: 'Consulta de Acompanhamento',
+    tags: ['online'],
+  },
+  {
+    id: 6,
+    time: '13:00 - 14:00',
+    startTime: 13, // Hora em formato numérico
+    endTime: 14,   // Hora em formato numérico
+    patient: 'José da Silva',
+    type: 'Terapia Online',
+    status: 'A CONFIRMAR',
+    statusColor: 'warning',
+    dataDaConsulta: new Date(Date.now() + 86400000 * 2).toISOString(), // 10 dias a partir de agora
+    category: 'Consulta de Acompanhamento',
+    tags: ['online'],
+  },
 ];
 
-const Agenda: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const isTablet = useMediaQuery(theme.breakpoints.down('lg'));
-  
-  const [currentDate, setCurrentDate] = useState(new Date());
 
   // Modal state
   const [openModal, setOpenModal] = useState(false);
   const [selectedAppointment, setSelectedAppointment] = useState<typeof mockAppointments[0] | null>(null);
   const [selectedOccurrenceDate, setSelectedOccurrenceDate] = useState<Date | null>(null);
+
+  // Handlers do modal
+  const handleOpenModal = (appointment: typeof mockAppointments[0], occurrenceDate?: Date) => {
+    setSelectedAppointment(appointment);
+    setSelectedOccurrenceDate(occurrenceDate ?? null);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedAppointment(null);
+    setSelectedOccurrenceDate(null);
+  };
 
   // Função para obter o nome do dia da semana
   const getDayName = (dayIndex: number) => {
@@ -129,53 +180,63 @@ const Agenda: React.FC = () => {
 
   // Obter agendamentos do dia (index 0..6)
   const getAppointmentsForDay = (dayIndex: number) => {
-    return mockAppointments.filter(appointment => appointment.day === dayIndex);
+    const weekStart = getWeekStart(currentDate);
+    return mockAppointments.filter(appointment => {
+      const appointmentDate = new Date(appointment.dataDaConsulta);
+      const apDayIndex = (appointmentDate.getDay() + 6) % 7; // segunda = 0
+      return apDayIndex === dayIndex && appointmentDate >= weekStart && appointmentDate < new Date(weekStart.getTime() + 7 * 86400000);
+    });
   };
 
-  // Posição vertical/altura
+  // Posição vertical/altura (corrigido para iniciar em 08:00)
   const getAppointmentPosition = (startTime: number) => {
-    return (startTime - 8) * 60; // 8:00 como início, 1h = 60px
+    return (startTime - 8) * 60; // 08:00 = top 0
   };
   const getAppointmentHeight = (startTime: number, endTime: number) => {
     return (endTime - startTime) * 60;
-  };
-
-  // Abre modal; opcionalmente passa a data de ocorrência
-  const handleOpenModal = (appointment: typeof mockAppointments[0], occurrenceDate?: Date) => {
-    setSelectedAppointment(appointment);
-    setSelectedOccurrenceDate(occurrenceDate ?? null);
-    setOpenModal(true);
-  };
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedAppointment(null);
-    setSelectedOccurrenceDate(null);
   };
 
   // Gera próximas consultas para os próximos N dias, agrupadas por data
   const getUpcomingAppointments = (daysAhead = 21) => {
     const today = new Date();
     today.setHours(0,0,0,0);
-    const groups: Record<string, { date: Date; items: typeof mockAppointments }[]> = {};
+
+    // precria o mapa de dias futuros
+    const map: Record<string, { date: Date; items: typeof mockAppointments }> = {};
     for (let i = 0; i < daysAhead; i++) {
       const d = new Date(today);
       d.setDate(today.getDate() + i);
-      const dayIndex = (d.getDay() + 6) % 7; // 0 = segunda
-      const items = mockAppointments.filter(a => a.day === dayIndex);
-      if (items.length > 0) {
-        const key = d.toISOString().slice(0,10);
-        groups[key] = groups[key] || [];
-        groups[key].push({ date: d, items });
-      }
+      const key = d.toISOString().slice(0,10); // YYYY-MM-DD
+      map[key] = { date: d, items: [] as any };
     }
-    // transformar em array ordenado
-    const entries = Object.keys(groups)
+
+    // percorre os agendamentos reais e coloca no dia correspondente (comparando date local)
+    mockAppointments.forEach(apt => {
+      const apDate = new Date(apt.dataDaConsulta);
+      apDate.setHours(0,0,0,0);
+      const key = apDate.toISOString().slice(0,10);
+      if (map[key]) {
+        map[key].items.push(apt);
+      }
+    });
+
+    // transforma em array ordenado e ordena itens por hora de início
+    const entries = Object.keys(map)
+      .filter(k => map[k].items.length > 0)
       .sort()
-      .map(k => ({ key: k, day: groups[k][0].date, items: groups[k].flatMap(g => g.items) }));
+      .map(k => ({
+        key: k,
+        day: map[k].date,
+        items: map[k].items.sort((a: any, b: any) => (a.startTime ?? 0) - (b.startTime ?? 0))
+      }));
+
     return entries;
   };
 
   const upcoming = getUpcomingAppointments(21); // próximos 21 dias
+
+  
+// Mock data para simular a resposta de uma API
 
   return (
     <div className={styles.agendaContainer}>
@@ -277,50 +338,38 @@ const Agenda: React.FC = () => {
 
                 {/* Agendamentos */}
                 {mockAppointments.map((appointment) => {
-                  const appointmentsForDay = getAppointmentsForDay(appointment.day);
-                  const appointmentIndex = appointmentsForDay.findIndex(apt => apt.id === appointment.id);
-                  
-                  // ocorrência na semana atualmente mostrada
                   const weekStart = getWeekStart(currentDate);
-                  const occurrenceDate = new Date(weekStart);
-                  occurrenceDate.setDate(weekStart.getDate() + appointment.day);
+                  const appointmentDate = new Date(appointment.dataDaConsulta);
+                  const dayIndex = (appointmentDate.getDay() + 6) % 7; // Ajusta para segunda como 0
 
-                  return (
-                    <Paper
-                      key={appointment.id}
-                      className={`${styles.appointmentCard} ${styles[appointment.statusColor === 'success' ? 'confirmed' : 'pending']}`}
-                      sx={{
-                        left: `${(appointment.day * 100) / 7 + 2}%`,
-                        width: `${100 / 7 - 4}%`,
-                        top: `${getAppointmentPosition(appointment.startTime)}px`,
-                        height: `${getAppointmentHeight(appointment.startTime, appointment.endTime)}px`,
-                        cursor: 'pointer',
-                      }}
-                      onClick={() => handleOpenModal(appointment, occurrenceDate)}
-                      role="button"
-                      tabIndex={0}
-                    >
-                      <Box>
-                        <Typography className={styles.appointmentTime}>
-                          {appointment.time}
-                        </Typography>
-                        <Typography className={styles.appointmentPatient}>
-                          {appointment.patient}
-                        </Typography>
-                        <Typography className={styles.appointmentType}>
-                          {appointment.type}
-                        </Typography>
-                      </Box>
-                      <Box className={styles.appointmentStatus}>
-                        <Chip
-                          label={appointment.status}
-                          size="small"
-                          color={appointment.statusColor as any}
-                          className={styles.statusChip}
-                        />
-                      </Box>
-                    </Paper>
-                  );
+                  if (appointmentDate >= weekStart && appointmentDate < new Date(weekStart.getTime() + 7 * 86400000)) {
+                    return (
+                      <Paper
+                        key={appointment.id}
+                        className={`${styles.appointmentCard} ${styles[appointment.statusColor === 'success' ? 'confirmed' : 'pending']}`}
+                        sx={{
+                          left: `${(dayIndex * 100) / 7 + 2}%`,
+                          width: `${100 / 7 - 4}%`,
+                          top: `${getAppointmentPosition(appointment.startTime)}px`,
+                          height: `${getAppointmentHeight(appointment.startTime, appointment.endTime)}px`,
+                          cursor: 'pointer',
+                        }}
+                        onClick={() => handleOpenModal(appointment, appointmentDate)}
+                        role="button"
+                        tabIndex={0}
+                      >
+                        <Box>
+                          <Typography className={styles.appointmentTime}>
+                            {appointment.time}
+                          </Typography>
+                          <Typography className={styles.appointmentPatient}>
+                            {appointment.patient}
+                          </Typography>
+                        </Box>
+                      </Paper>
+                    );
+                  }
+                  return null;
                 })}
               </Box>
             </Grid>
@@ -342,7 +391,6 @@ const Agenda: React.FC = () => {
                     <Typography variant="subtitle1" sx={{ textTransform: 'capitalize' }}>{dateLabel}</Typography>
                     <Box mt={1}>
                       {group.items.map((apt) => {
-                        // occurrence date for this item
                         const parts = group.key.split('-');
                         const occurrence = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
                         return (
