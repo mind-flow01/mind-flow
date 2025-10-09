@@ -1,19 +1,42 @@
-import { Controller, Post, Body, Get, UseGuards, Req } from '@nestjs/common';
-import { CreateUserUseCase } from '../useCases/createUserUseCase/createUserUseCase';
-import { CreateUserBody } from '../dto/userBody';
+import { Controller, Post, Body } from '@nestjs/common';
 import { UserViewModel } from '../viewModel/UserViewModel';
 import { Public } from 'src/modules/auth/decorators/isPublic';
-
+import { CreatePsicologoBody } from '../dto/create-psicologo.dto';
+import { CreatePacienteBody } from '../dto/create-paciente.dto';
+import { CreatePsicologoUseCase } from '../useCases/createUserUseCase/create-psicologo.use-case';
+import { CreatePacienteUseCase } from '../useCases/createUserUseCase/create-paciente.use-case';
 
 @Controller('users')
 export class UserController {
-  constructor(private createUserUseCase : CreateUserUseCase) {}
+  constructor(
+    private createPsicologoUseCase: CreatePsicologoUseCase,
+    private createPacienteUseCase: CreatePacienteUseCase,
+  ) {}
 
-  @Post()
+  @Post('psicologo')
   @Public()
-  async create(@Body() body: CreateUserBody) {
-    const {email, name, password} = body
-    const user = await this.createUserUseCase.execute({email, name, password});
-    return UserViewModel.toHttp(user)
+  async createPsicologo(@Body() body: CreatePsicologoBody) {
+    const { email, name, password, crp } = body;
+    const user = await this.createPsicologoUseCase.execute({ 
+      email, 
+      name, 
+      password, 
+      crp 
+    });
+    return UserViewModel.toHttp(user);
+  }
+
+  @Post('paciente')
+  @Public()
+  async createPaciente(@Body() body: CreatePacienteBody) {
+    const { email, name, password, cpf, gender } = body;
+    const user = await this.createPacienteUseCase.execute({ 
+      email, 
+      name, 
+      password, 
+      cpf, 
+      gender 
+    });
+    return UserViewModel.toHttp(user);
   }
 }

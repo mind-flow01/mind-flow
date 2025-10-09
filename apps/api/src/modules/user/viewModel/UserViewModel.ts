@@ -1,11 +1,12 @@
-import { User } from "../entities/User";
+import { Role, User } from "../entities/User";
 
 export class UserViewModel {
-    static toHttp({id, email, name, created_at, updatedAt}: User) {
+    static toHttp({id, email, name, role, created_at, updatedAt}: User) {
         return {
             id, 
             email, 
             name, 
+            role,
             created_at, 
             updatedAt
         }

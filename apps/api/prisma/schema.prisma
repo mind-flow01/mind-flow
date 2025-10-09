@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -14,11 +8,69 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  PSICOLOGO
+  PACIENTE
+}
+
+enum Gender {
+  MASCULINO
+  FEMININO
+  OUTRO
+}
+
+
+enum PatientStatus {
+  ATIVO
+  ACOMPANHAMENTO
+  ALTA
+  INATIVO
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+
 model User {
-  id String @id
-  name String
-  email String @unique
-  password String
-  created_at DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id             String        @id @default(cuid())
+  name           String
+  email          String        @unique
+  password       String
+  photo_url      String?
+  phone          String?
+  role           Role
+  account_status AccountStatus @default(ACTIVE)
+  created_at     DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  psicologo      Psicologo?
+  paciente       Paciente?
+}
+
+model Psicologo {
+  userId String @id
+  user   User   @relation(fields: [userId], references: [id])
+
+  crp               String @unique
+  bio               String?
+  schedule_settings Json? 
+
+  pacientes Paciente[] @relation("PsicologoResponsavel")
+}
+
+model Paciente {
+  userId String @id
+  user   User   @relation(fields: [userId], references: [id])
+
+  cpf                  String      @unique
+  gender               Gender
+  initial_observations String?
+  history              String?
+  status               PatientStatus @default(ATIVO)
+
+  psicologo_responsavel_id String? 
+  psicologo_responsavel    Psicologo?  @relation("PsicologoResponsavel", fields: [psicologo_responsavel_id], references: [userId])
 }
