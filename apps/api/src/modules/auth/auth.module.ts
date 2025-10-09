@@ -7,6 +7,7 @@ import { DatabaseModule } from "src/database/database.module";
 import { SignInDTOValidateMiddleware } from "./middleware/signInDTOValidate.Middleware";
 import { SignInUseCase } from "./useCases/signInUseCases";
 import { JwtModule } from "@nestjs/jwt";
+import { JwtStrategy } from "./strategies/jwt.strategy";
 
 @Module({
     imports: [DatabaseModule ,UserModule, JwtModule.register({
@@ -14,7 +15,7 @@ import { JwtModule } from "@nestjs/jwt";
         signOptions: {expiresIn: "3 days"}
     })],
     controllers: [AuthController],
-    providers: [LocalStrategy, ValidateUserUseCase, SignInUseCase],
+    providers: [LocalStrategy, JwtStrategy ,ValidateUserUseCase, SignInUseCase],
 })
 
 export class AuthModule {
