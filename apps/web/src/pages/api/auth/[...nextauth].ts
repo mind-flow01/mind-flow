@@ -1,7 +1,7 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
       name: 'Credentials',
@@ -10,17 +10,63 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email) return null;
-        // TODO: replace with Supabase auth or custom logic
-        return { id: 'demo-user', name: 'Demo User', email: credentials.email } as any;
+        if (!credentials?.email || !credentials.password) {
+          return null;
+        }
+
+        const response = await fetch('http://localhost:3001/signIn', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: credentials.email,
+            password: credentials.password,
+          }),
+        });
+      
+        if (response.ok) {
+      const userData = await response.json();
+
+      return userData;
+    } 
+
+        const user = await response.json();
+
+        if (response.ok && user) {
+          return user;
+        }
+      
+        return null;
       },
     }),
   ],
-  session: { strategy: 'jwt' as const },
-  pages: {},
+  session: {
+    strategy: 'jwt',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.accessToken = user.accessToken;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.accessToken = token.accessToken;
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: '/login',
+  },
 };
 
 export default NextAuth(authOptions);
-
-
-

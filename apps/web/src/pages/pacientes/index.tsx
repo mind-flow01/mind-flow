@@ -5,8 +5,10 @@ import Header from '../../components/Header';
 import styles from '../../styles/ListaPacientes.module.css';
 import { mockPatientsList } from '../../lib/mockData';
 import { FiPlus } from 'react-icons/fi';
+import { NextPageWithAuth } from '@/types/page-auth';
 
-const PatientsListPage: React.FC = () => {
+
+const PatientsListPage: NextPageWithAuth = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredPatients = mockPatientsList.filter(patient =>
@@ -55,6 +57,10 @@ const PatientsListPage: React.FC = () => {
       </div>
     </div>
   );
+};
+
+PatientsListPage.auth = {
+  isProtected: true,
 };
 
 export default PatientsListPage;

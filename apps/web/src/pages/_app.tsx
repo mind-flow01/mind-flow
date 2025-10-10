@@ -1,27 +1,35 @@
-// src/pages/_app.tsx
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
-import Layout from '../components/Layout'; // Importação default do Layout
-import '../styles/globals.css'; // Importação do CSS global
+import Layout from '../components/Layout';
+import '../styles/globals.css';
+import { SessionProvider } from 'next-auth/react';
+import { AuthGuard } from '@/components/auth/AuthGuard';
+import { NextPageWithAuth } from '@/types/page-auth';
 
-function MyApp({ Component, pageProps }: AppProps) {
+type AppPropsWithAuth = AppProps & {
+  Component: NextPageWithAuth;
+};
+
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppPropsWithAuth) {
   const router = useRouter();
 
-  // Rotas que NÃO devem ter o layout (incluindo a sidebar)
-  // Certifique-se de que '/login' e '/' estão aqui se essas páginas não devem ter sidebar
   const noLayoutPaths = ['/login', '/'];
-
-  // Determina se o Layout (com a Sidebar) deve ser exibido
   const showLayout = !noLayoutPaths.includes(router.pathname);
 
-  return showLayout ? (
-    // Se showLayout for true, a página é envolvida pelo Layout
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  ) : (
-    // Caso contrário, a página é renderizada diretamente sem o Layout
-    <Component {...pageProps} />
+  return (
+    <SessionProvider session={session}>
+      {showLayout ? (
+        <Layout>
+          <AuthGuard>
+            <Component {...pageProps} />
+          </AuthGuard>
+        </Layout>
+      ) : (
+        <AuthGuard>
+          <Component {...pageProps} />
+        </AuthGuard>
+      )}
+    </SessionProvider>
   );
 }
 

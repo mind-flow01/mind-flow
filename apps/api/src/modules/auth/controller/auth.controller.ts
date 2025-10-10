@@ -16,12 +16,18 @@ export class AuthController {
     @UseGuards(LocalAuthGuard)
     async singIn(@Request() request : AuthRequestModel) {
         const access_token = await this.signInUseCase.execute({user: request.user});
-        return {access_token};
+        return {
+            id: request.user.id,
+            name: request.user.name,
+            email: request.user.email,
+            accessToken: access_token
+        };
     }
 
     @Get('test')
     @UseGuards(JwtAuthGuard)
-    async test() {
+    async test(@Request() request : any) {
+        console.log(request.user);
         return 'test';
     }
 }
