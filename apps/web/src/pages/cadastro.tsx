@@ -11,7 +11,6 @@ const Cadastro: NextPage = () => {
       </Head>
 
       <div className={styles.container}>
-        {/* Painel Direito (mantido apenas o formulário) */}
         <div className={styles.rightPanel}>
           <div className={styles.formWrapper}>
             <div className={styles.header}>
