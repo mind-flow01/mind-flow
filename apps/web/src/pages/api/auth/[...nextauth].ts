@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
             password: credentials.password,
           }),
         });
-      
         if (response.ok) {
       const userData = await response.json();
 

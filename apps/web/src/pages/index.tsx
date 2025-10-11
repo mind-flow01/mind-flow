@@ -7,7 +7,6 @@ export default function Home() {
   const [apiData, setApiData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  console.log(session)
 
   const handleApiRequest = async () => {
     setIsLoading(true);

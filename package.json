@@ -13,6 +13,10 @@
     "build": "npm -w apps/web run build && npm -w apps/api run build",
     "test": "npm -w apps/api run test --if-present && npm -w apps/web run test --if-present",
     "lint": "npm -w apps/web run lint --if-present"
+  },
+  "dependencies": {
+    "@tanstack/react-query": "^5.90.2",
+    "@tanstack/react-query-devtools": "^5.90.2",
+    "axios": "^1.12.2"
   }
 }
-

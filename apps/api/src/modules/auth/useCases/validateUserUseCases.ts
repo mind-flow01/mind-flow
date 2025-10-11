@@ -17,7 +17,7 @@ export class ValidateUserUseCase {
         
         if(!user) throw new UnauthorizedException("Email ou senhas incorretos")
             
-        const isPasswordMatched = compare(password, user.password)
+        const isPasswordMatched = await compare(password, user.password)
 
         if(!isPasswordMatched) throw new UnauthorizedException("Email ou senhas incorretos")
         
