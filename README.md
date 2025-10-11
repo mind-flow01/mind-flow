@@ -38,11 +38,13 @@ npx prisma migrate dev
 
 ou execute os debuggers generate e migrate criados
 
-# Na raiz do projeto
+**Na raiz do projeto**
 crie um .env e um .env.local
 
 
-# .env
+**.env**
 - DATABASE_URL="postgresql://docker:docker@localhost:5432/meu_banco?schema=public"
 - JWT_SECRET=SEU_SECRET
 - NEXT_PUBLIC_DB_HOST="https://localhost:3001/"
+**.env.local**
+- NEXTAUTH_SECRET=SEU_SECRET
