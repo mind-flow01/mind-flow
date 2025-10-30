@@ -1,0 +1,244 @@
+
+
+.container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f2f7f5;
+  overflow-y: auto;
+}
+
+.leftPanel {
+  flex: 1;
+  background: linear-gradient(to bottom right, #004d40, #00695c);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.leftPanel::before {
+  content: "";
+  background-image: url("/cadastro-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  position: absolute;
+  inset: 0;
+  opacity: 0.15;
+}
+
+.leftPanelContent {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+}
+
+.leftPanelContent h2 {
+  font-weight: 400;
+  font-size: 1.7rem;
+  line-height: 1.4;
+}
+
+
+.rightPanel {
+  flex: 1.2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 2rem;
+}
+
+.formWrapper {
+  background: #ffffff;
+  padding: 3rem 2.5rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 640px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  margin-bottom: 1rem;
+}
+
+.header h3 {
+  color: #004d40;
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.header p {
+  color: #777;
+}
+
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.formRow {
+  display: flex;
+  gap: 1.2rem;
+  flex-wrap: wrap;
+}
+
+.inputGroup {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.inputGroupFull {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #004d40;
+}
+
+.inputField,
+.inputFieldFile {
+  width: 100%;
+  padding: 14px 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+  background-color: #fafafa;
+}
+
+.inputField:focus,
+.inputFieldFile:focus {
+  outline: none;
+  border-color: #00796b;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(0, 121, 107, 0.25);
+}
+
+/* Campo de arquivo customizado */
+.inputFieldFile::-webkit-file-upload-button {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: 500;
+}
+
+.inputFieldFile::-webkit-file-upload-button:hover {
+  background-color: #005f56;
+}
+
+.submitButton {
+  width: 100%;
+  background: #00796b;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 15px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+  background: #005f56;
+  transform: translateY(-2px);
+}
+
+.submitButton:active {
+  transform: translateY(0);
+}
+
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #b2dfdb;
+  border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background-color: #80cbc4;
+}
+
+/* ===============================
+   📱 RESPONSIVIDADE
+================================== */
+
+/* Tablets */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .leftPanel {
+    height: 220px;
+  }
+
+  .leftPanelContent h2 {
+    font-size: 1.4rem;
+  }
+
+  .formWrapper {
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .formRow {
+    flex-direction: column;
+  }
+}
+
+/* Celulares */
+@media (max-width: 600px) {
+  .leftPanel {
+    display: none;
+  }
+
+  .rightPanel {
+    padding: 1.5rem;
+  }
+
+  .formWrapper {
+    padding: 1.5rem;
+    box-shadow: none;
+    background-color: #f9f9f9;
+  }
+
+  .header h3 {
+    font-size: 1.5rem;
+  }
+
+  .inputField,
+  .inputFieldFile {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+
+  .submitButton {
+    padding: 12px;
+    font-size: 1rem;
+  }
+}
