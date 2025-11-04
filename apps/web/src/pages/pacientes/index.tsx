@@ -59,8 +59,8 @@ const PatientsListPage: NextPageWithAuth = () => {
   );
 };
 
-// PatientsListPage.auth = {
-//   isProtected: true,
-// };
+PatientsListPage.auth = {
+  isProtected: true,
+};
 
 export default PatientsListPage;

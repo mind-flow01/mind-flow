@@ -27,13 +27,13 @@ async function bootstrap() {
   }
 
   app.enableCors({
-    origin: process.env.FRONT_END_URL, 
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    origin: true, // Permite todas as origens (ou você pode especificar ['http://localhost:3000'])
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   });
-
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(port, '0.0.0.0');
+  await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
 
   console.log(`🚀 Server running on ${protocol}://localhost:${port}`);
 }
