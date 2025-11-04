@@ -7,9 +7,11 @@ import { AuthModule } from './modules/auth/auth.module';
 import { ConsultaModule } from './modules/consulta/consulta.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwtAuth.guard';
-
+import { ConfigModule } from '@nestjs/config';
 @Module({
-  imports: [DatabaseModule, UserModule, AuthModule, ConsultaModule],
+  imports: [ConfigModule.forRoot({
+      isGlobal: true, 
+    }), DatabaseModule, UserModule, AuthModule, ConsultaModule],
   controllers: [AppController],
   providers: [
     AppService,

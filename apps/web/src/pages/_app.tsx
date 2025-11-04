@@ -14,7 +14,7 @@ type AppPropsWithAuth = AppProps & {
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppPropsWithAuth) {
   const router = useRouter();
   const queryClient = new QueryClient();
-  const noLayoutPaths = ['/login', '/'];
+  const noLayoutPaths = ['/login', '/cadastro'];
   const showLayout = !noLayoutPaths.includes(router.pathname);
 
   return (

@@ -1,6 +1,5 @@
 import { User as PrismaUser } from "generated/prisma";
-import { Role, User, AccountStatus } from "src/modules/user/entities/User"; // Importe o enum AccountStatus
-
+import { Role, User, AccountStatus } from "src/modules/user/entities/User"; 
 export class PrismaUserMapper {
     static toPrisma(user: User) {
         return {

@@ -7,6 +7,8 @@ import { CreatePacienteWithPsicologoUseCase } from "./useCases/create-paciente-w
 import { ListPacientesUseCase } from "./useCases/list-pacientes.use-case";
 import { UserRepository } from "./repositories/UserRepository";
 import { PrismaUserRepository } from "src/database/prisma/repositories/PrismaUserRepository";
+import { PsicologoRepository } from "./repositories/PsicologoRepository";
+import { PrismaPsicologoRepository } from "src/database/prisma/repositories/PrismaPsicologoRepository";
 import { PacienteRepository } from "./repositories/PacienteRepository";
 import { PrismaPacienteRepository } from "src/database/prisma/repositories/PrismaPacienteRepository";
 
@@ -21,6 +23,10 @@ import { PrismaPacienteRepository } from "src/database/prisma/repositories/Prism
         {
             provide: UserRepository,
             useClass: PrismaUserRepository,
+        },
+        {
+            provide: PsicologoRepository,
+            useClass: PrismaPsicologoRepository,
         },
         {
             provide: PacienteRepository,

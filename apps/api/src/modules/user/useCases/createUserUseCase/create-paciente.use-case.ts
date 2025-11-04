@@ -18,6 +18,7 @@ interface CreatePacienteRequest {
 export class CreatePacienteUseCase {
     constructor(
         private userRepository: UserRepository,
+        private pacienteRepository: PacienteRepository,
     ) {}
 
     async execute({ email, name, password, cpf, gender }: CreatePacienteRequest): Promise<User> {
@@ -26,10 +27,10 @@ export class CreatePacienteUseCase {
             throw new ConflictException("Este endereço de email já está em uso.");
         }
         
-        // const pacienteWithSameCpf = await this.pacienteRepository.findByCpf(cpf);
-        // if (pacienteWithSameCpf) {
-        //     throw new ConflictException("Este CPF já está cadastrado.");
-        // }
+        const pacienteWithSameCpf = await this.pacienteRepository.findByCpf(cpf);
+        if (pacienteWithSameCpf) {
+            throw new ConflictException("Este CPF já está cadastrado.");
+        }
         
         const user = new User({
             email,
