@@ -7,10 +7,10 @@ import { PrismaPacienteMapper } from '../mappers/PrismaPacienteMapper';
 @Injectable()
 export class PrismaPacienteRepository implements PacienteRepository {
   constructor(private prisma: PrismaService) {}
-
-  async findByCpf(cpf: string): Promise<Paciente | null> {
+  async findByCpfHash(cpfHash: string): Promise<Paciente | null> {
+    
     const paciente = await this.prisma.paciente.findUnique({
-      where: { cpf },
+      where: { cpfHash },
     });
 
     if (!paciente) {

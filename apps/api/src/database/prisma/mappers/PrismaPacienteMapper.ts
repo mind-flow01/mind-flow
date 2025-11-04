@@ -16,6 +16,7 @@ export class PrismaPacienteMapper {
     return {
       userId: paciente.userId,
       cpf: paciente.cpf,
+      cpfHash: paciente.cpfHash,
       gender: paciente.gender,
       initial_observations: paciente.initial_observations,
       history: paciente.history,
@@ -33,6 +34,7 @@ export class PrismaPacienteMapper {
       {
         userId: raw.userId,
         cpf: raw.cpf,
+        cpfHash: raw.cpfHash,
         gender: raw.gender as Gender, // Faz o type cast do enum
         status: raw.status as PatientStatus, // Faz o type cast do enum
         initial_observations: raw.initial_observations ?? null,
