@@ -26,12 +26,30 @@ async function bootstrap() {
     app = await NestFactory.create(AppModule);
   }
 
-  app.enableCors({
-    origin: true, // Permite todas as origens (ou você pode especificar ['http://localhost:3000'])
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+  // Configuração de CORS
+  const isDevelopment = process.env.NODE_ENV !== 'production';
+  
+  const corsOptions = {
+    origin: isDevelopment 
+      ? true // Permite todas as origens em desenvolvimento
+      : (process.env.FRONT_END_URL 
+          ? process.env.FRONT_END_URL.split(',')
+          : ['http://localhost:3000']),
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
     credentials: true,
-  });
+    allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+    exposedHeaders: ['Authorization'],
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  };
+  
+  app.enableCors(corsOptions);
+  
+  // Log para debug em desenvolvimento
+  if (isDevelopment) {
+    console.log('🔓 CORS enabled for all origins (development mode)');
+  }
+
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
 
