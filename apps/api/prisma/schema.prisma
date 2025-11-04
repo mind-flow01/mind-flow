@@ -79,6 +79,7 @@ model Paciente {
   user   User   @relation(fields: [userId], references: [id])
 
   cpf                  String      @unique
+  cpfHash              String      @unique
   gender               Gender
   initial_observations String?
   history              String?

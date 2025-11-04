@@ -4,7 +4,8 @@ import { Role, User } from "../../entities/User";
 import { Gender, Paciente } from "../../entities/Paciente";
 import { UserRepository } from "../../repositories/UserRepository";
 import { PacienteRepository } from "../../repositories/PacienteRepository";
-
+import { createHash } from 'crypto'; // <--- IMPORTE O 'crypto' DO NODE
+import { EncryptionService } from "src/modules/services/encryptionService";
 
 interface CreatePacienteRequest {
     email: string;
@@ -19,6 +20,7 @@ export class CreatePacienteUseCase {
     constructor(
         private userRepository: UserRepository,
         private pacienteRepository: PacienteRepository,
+        private encryptionService: EncryptionService,
     ) {}
 
     async execute({ email, name, password, cpf, gender }: CreatePacienteRequest): Promise<User> {
@@ -27,11 +29,14 @@ export class CreatePacienteUseCase {
             throw new ConflictException("Este endereço de email já está em uso.");
         }
         
-        const pacienteWithSameCpf = await this.pacienteRepository.findByCpf(cpf);
+        const cpfHash = createHash('sha256').update(cpf).digest('hex');
+
+        const pacienteWithSameCpf = await this.pacienteRepository.findByCpfHash(cpfHash); 
+        
         if (pacienteWithSameCpf) {
             throw new ConflictException("Este CPF já está cadastrado.");
         }
-        
+
         const user = new User({
             email,
             name,
@@ -39,9 +44,12 @@ export class CreatePacienteUseCase {
             role: Role.PACIENTE,
         });
 
+        const encryptedCpf = this.encryptionService.encrypt(cpf);
+
         const paciente = new Paciente({
             userId: user.id,
-            cpf,
+            cpf: encryptedCpf,
+
             gender,
         });
 

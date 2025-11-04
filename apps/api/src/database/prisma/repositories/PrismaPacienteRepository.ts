@@ -6,12 +6,12 @@ import { PrismaPacienteMapper } from "../mappers/PrismaPacienteMapper";
 
 @Injectable()
 export class PrismaPacienteRepository implements PacienteRepository {
-    constructor(private prisma: PrismaService) {}
-
-    async findByCpf(cpf: string): Promise<Paciente | null> {
-        const paciente = await this.prisma.paciente.findUnique({
-            where: { cpf },
-        });
+  constructor(private prisma: PrismaService) {}
+  async findByCpfHash(cpfHash: string): Promise<Paciente | null> {
+    
+    const paciente = await this.prisma.paciente.findUnique({
+      where: { cpfHash },
+    });
 
         if (!paciente) return null;
         return PrismaPacienteMapper.toDomain(paciente);

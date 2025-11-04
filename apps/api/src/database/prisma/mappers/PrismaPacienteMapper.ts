@@ -11,6 +11,7 @@ export class PrismaPacienteMapper {
     return {
       userId: paciente.userId,
       cpf: paciente.cpf,
+      cpfHash: paciente.cpfHash,
       gender: paciente.gender,
       initial_observations: paciente.initial_observations,
       history: paciente.history,
@@ -23,15 +24,20 @@ export class PrismaPacienteMapper {
    * Converte um objeto 'Paciente' vindo do Prisma para a entidade de domínio 'Paciente'.
    */
   static toDomain(raw: PrismaPaciente): Paciente {
-    return new Paciente({
-      userId: raw.userId,
-      cpf: raw.cpf,
-      gender: raw.gender as Gender,
-      initial_observations: raw.initial_observations ?? null,
-      history: raw.history ?? null,
-      status: raw.status as PatientStatus,
-      psicologo_responsavel_id: raw.psicologo_responsavel_id ?? null,
-    });
+    return new Paciente(
+      {
+        userId: raw.userId,
+        cpf: raw.cpf,
+        cpfHash: raw.cpfHash,
+        gender: raw.gender as Gender, // Faz o type cast do enum
+        status: raw.status as PatientStatus, // Faz o type cast do enum
+        initial_observations: raw.initial_observations ?? null,
+        history: raw.history ?? null,
+        psicologo_responsavel_id: raw.psicologo_responsavel_id ?? null,
+      },
+      // (Assumindo que sua entidade Paciente não recebe um ID separado, 
+      //  pois o userId já está nas props)
+    );
   }
 
   /**
