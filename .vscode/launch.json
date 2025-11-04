@@ -1,0 +1,54 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run API",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "start"
+      ],
+      "cwd": "${workspaceFolder}/apps/api",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Front-end",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Prisma: Gerar Cliente",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "prisma",
+        "generate"
+      ],
+      "cwd": "${workspaceFolder}/apps/api",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Prisma: Aplicar Migrações (deploy)",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "prisma",
+        "migrate",
+        "deploy"
+      ],
+      "cwd": "${workspaceFolder}/apps/api",
+      "console": "integratedTerminal"
+    }
+  ]
+}

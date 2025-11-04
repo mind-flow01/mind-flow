@@ -1,65 +1,124 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
+import React, { useState, FormEvent } from 'react';
+import { useRouter } from 'next/router';
 import styles from '../styles/cadastro.module.css';
+import api from '@/hooks/api';
 
-const Cadastro: NextPage = () => {
+const CadastroPsicologo: NextPage = () => {
+  const router = useRouter();
+
+  // Estados dos campos do formulário
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [crp, setCrp] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // Função para envio do formulário
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      // Envia os dados para a API
+      await api.post('/users/psicologo', {
+        name,
+        email,
+        password,
+        crp,
+      });
+
+      // Redireciona após sucesso
+      router.push('/login');
+    } catch (error: any) {
+      console.error('Erro ao cadastrar psicólogo:', error);
+      alert(error.response?.data?.message || 'Erro ao criar conta. Tente novamente.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Head>
-        <title>Mindflow - Novo Paciente</title>
+        <title>Mindflow - Cadastro Psicólogo</title>
       </Head>
 
       <div className={styles.container}>
         <div className={styles.rightPanel}>
           <div className={styles.formWrapper}>
             <div className={styles.header}>
-
-              <h3>Novo Paciente</h3>
-              <p>Preencha as informações abaixo para cadastrar</p>
+              <h3>Criar conta</h3>
+              <p>Crie sua conta profissional para começar</p>
             </div>
 
-            <form className={styles.formGrid}>
-              <div className={styles.formRow}>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="nome">Nome completo</label>
-                  <input id="nome" type="text" placeholder="Digite o nome" className={styles.inputField} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="dataNascimento">Data de nascimento</label>
-                  <input id="dataNascimento" type="date" className={styles.inputField} />
-                </div>
-              </div>
-
-              <div className={styles.formRow}>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="email">Email</label>
-                  <input id="email" type="email" placeholder="exemplo@email.com" className={styles.inputField} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="idade">Idade</label>
-                  <input id="idade" type="number" placeholder="Digite a idade" className={styles.inputField} />
-                </div>
-              </div>
-
-              <div className={styles.formRow}>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="telefone">Telefone</label>
-                  <input id="telefone" type="tel" placeholder="(00) 00000-0000" className={styles.inputField} />
-                </div>
-                <div className={styles.inputGroup}>
-                  <label htmlFor="foto">Foto</label>
-                  <input id="foto" type="file" accept="image/*" className={styles.inputFieldFile} />
-                </div>
+            <form className={styles.formGrid} onSubmit={handleSubmit}>
+              <div className={styles.inputGroupFull}>
+                <label htmlFor="name" className={styles.formLabel}>
+                  Nome completo
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Digite seu nome completo"
+                  className={styles.inputField}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
               </div>
 
               <div className={styles.inputGroupFull}>
-                <label htmlFor="endereco">Endereço</label>
-                <input id="endereco" type="text" placeholder="Rua, número, bairro, cidade" className={styles.inputField} />
+                <label htmlFor="email" className={styles.formLabel}>
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  placeholder="exemplo@email.com"
+                  className={styles.inputField}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
               </div>
 
-              <button type="submit" className={styles.submitButton}>
-                Cadastrar Paciente
+              <div className={styles.formRow}>
+                <div className={styles.inputGroup}>
+                  <label htmlFor="password" className={styles.formLabel}>
+                    Senha
+                  </label>
+                  <input
+                    id="password"
+                    type="password"
+                    placeholder="Mínimo 6 caracteres"
+                    className={styles.inputField}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={6}
+                  />
+                </div>
+
+                <div className={styles.inputGroup}>
+                  <label htmlFor="crp" className={styles.formLabel}>
+                    CRP
+                  </label>
+                  <input
+                    id="crp"
+                    type="text"
+                    placeholder="Digite seu CRP (ex: 06/12345)"
+                    className={styles.inputField}
+                    value={crp}
+                    onChange={(e) => setCrp(e.target.value)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <button type="submit" className={styles.submitButton} disabled={loading}>
+                {loading ? 'Criando conta...' : 'Criar Conta'}
               </button>
             </form>
           </div>
@@ -69,4 +128,4 @@ const Cadastro: NextPage = () => {
   );
 };
 
-export default Cadastro;
+export default CadastroPsicologo;
