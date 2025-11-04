@@ -16,6 +16,7 @@ interface CreatePsicologoRequest {
 export class CreatePsicologoUseCase {
     constructor(
         private userRepository: UserRepository,
+        private psicologoRepository: PsicologoRepository,
     ) {}
 
     async execute({ email, name, password, crp }: CreatePsicologoRequest): Promise<User> {
@@ -24,10 +25,10 @@ export class CreatePsicologoUseCase {
             throw new ConflictException("Este endereço de email já está em uso.");
         }
         
-        // const psicologoWithSameCrp = await this.psicologoRepository.findByCrp(crp);
-        // if (psicologoWithSameCrp) {
-        //     throw new ConflictException("Este CRP já está cadastrado.");
-        // }
+        const psicologoWithSameCrp = await this.psicologoRepository.findByCrp(crp);
+        if (psicologoWithSameCrp) {
+            throw new ConflictException("Este CRP já está cadastrado.");
+        }
 
         const user = new User({
             email,

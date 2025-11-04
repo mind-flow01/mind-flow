@@ -5,6 +5,10 @@ import { CreatePsicologoUseCase } from "./useCases/createUserUseCase/create-psic
 import { CreatePacienteUseCase } from "./useCases/createUserUseCase/create-paciente.use-case";
 import { UserRepository } from "./repositories/UserRepository";
 import { PrismaUserRepository } from "src/database/prisma/repositories/PrismaUserRepository";
+import { PsicologoRepository } from "./repositories/PsicologoRepository";
+import { PrismaPsicologoRepository } from "src/database/prisma/repositories/PrismaPsicologoRepository";
+import { PacienteRepository } from "./repositories/PacienteRepository";
+import { PrismaPacienteRepository } from "src/database/prisma/repositories/PrismaPacienteRepository";
 
 @Module({
     imports: [DatabaseModule],
@@ -15,6 +19,14 @@ import { PrismaUserRepository } from "src/database/prisma/repositories/PrismaUse
         {
             provide: UserRepository,
             useClass: PrismaUserRepository,
+        },
+        {
+            provide: PsicologoRepository,
+            useClass: PrismaPsicologoRepository,
+        },
+        {
+            provide: PacienteRepository,
+            useClass: PrismaPacienteRepository,
         },
     ],
 })
