@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { Controller, Post, Get, Put, Delete, Body, Param, Request } from '@nestjs/common';
+=======
+import { Controller, Post, Get, Put, Delete, Body, Param } from '@nestjs/common';
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 import { ConsultaViewModel } from '../viewModel/ConsultaViewModel';
 import { CreateConsultaBody } from '../dto/create-consulta.dto';
 import { UpdateConsultaBody } from '../dto/update-consulta.dto';
@@ -18,7 +22,11 @@ export class ConsultaController {
 
   @Post()
   async createConsulta(@Body() body: CreateConsultaBody) {
+<<<<<<< HEAD
     const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id } = body;
+=======
+    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA } = body;
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     const consulta = await this.createConsultaUseCase.execute({ 
       paciente_id, 
       horario: new Date(horario),
@@ -27,7 +35,10 @@ export class ConsultaController {
       tags,
       status,
       sugestao_IA,
+<<<<<<< HEAD
       transcricao_id,
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     });
     return ConsultaViewModel.toHttp(consulta);
   }
@@ -46,7 +57,11 @@ export class ConsultaController {
 
   @Put(':id')
   async updateConsulta(@Param('id') id: string, @Body() body: UpdateConsultaBody) {
+<<<<<<< HEAD
     const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id } = body;
+=======
+    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA } = body;
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     const consulta = await this.updateConsultaUseCase.execute({
       id,
       paciente_id,
@@ -56,7 +71,10 @@ export class ConsultaController {
       tags,
       status,
       sugestao_IA,
+<<<<<<< HEAD
       transcricao_id,
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     });
     return ConsultaViewModel.toHttp(consulta);
   }

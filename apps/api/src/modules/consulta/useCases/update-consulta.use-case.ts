@@ -12,7 +12,10 @@ interface UpdateConsultaRequest {
     tags?: string[];
     status?: ConsultaStatus;
     sugestao_IA?: string;
+<<<<<<< HEAD
     transcricao_id?: string;
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 }
 
 @Injectable()
@@ -22,7 +25,11 @@ export class UpdateConsultaUseCase {
         private prisma: PrismaService,
     ) {}
 
+<<<<<<< HEAD
     async execute({ id, paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id }: UpdateConsultaRequest): Promise<Consulta> {
+=======
+    async execute({ id, paciente_id, horario, tipo, categoria, tags, status, sugestao_IA }: UpdateConsultaRequest): Promise<Consulta> {
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
         // Buscar consulta existente
         const consultaExistente = await this.consultaRepository.findById(id);
 
@@ -49,7 +56,10 @@ export class UpdateConsultaUseCase {
         if (tags !== undefined) consultaExistente.tags = tags;
         if (status !== undefined) consultaExistente.status = status;
         if (sugestao_IA !== undefined) consultaExistente.sugestao_IA = sugestao_IA;
+<<<<<<< HEAD
         if (transcricao_id !== undefined) consultaExistente.transcricao_id = transcricao_id;
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 
         await this.consultaRepository.update(consultaExistente);
 

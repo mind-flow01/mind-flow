@@ -12,7 +12,10 @@ interface CreateConsultaRequest {
     tags: string[];
     status?: ConsultaStatus;
     sugestao_IA?: string;
+<<<<<<< HEAD
     transcricao_id?: string;
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 }
 
 @Injectable()
@@ -22,7 +25,11 @@ export class CreateConsultaUseCase {
         private prisma: PrismaService,
     ) {}
 
+<<<<<<< HEAD
     async execute({ paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id }: CreateConsultaRequest): Promise<Consulta> {
+=======
+    async execute({ paciente_id, horario, tipo, categoria, tags, status, sugestao_IA }: CreateConsultaRequest): Promise<Consulta> {
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
         // Verificar se o paciente existe
         const paciente = await this.prisma.paciente.findUnique({
             where: { userId: paciente_id },
@@ -41,7 +48,10 @@ export class CreateConsultaUseCase {
             tags,
             status: status ?? ConsultaStatus.A_CONFIRMAR,
             sugestao_IA,
+<<<<<<< HEAD
             transcricao_id,
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
         });
 
         await this.consultaRepository.create(consulta);

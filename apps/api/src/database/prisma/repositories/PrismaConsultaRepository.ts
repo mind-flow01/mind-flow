@@ -75,7 +75,8 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                         },
                     },
                 },
-            },
+                transcricao: true,
+            } as any,
             orderBy: { horario: 'asc' },
         });
 
@@ -91,13 +92,23 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 tags: consulta.tags,
                 status: consulta.status,
                 sugestao_IA: consulta.sugestao_IA,
+<<<<<<< HEAD
                 transcricao_id: consulta.transcricao_id,
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                 created_at: consulta.created_at,
                 updatedAt: consulta.updatedAt,
                 paciente: consultaRaw.paciente ? {
                     user: {
                         name: consultaRaw.paciente.user.name,
                     },
+                } : null,
+                transcricao: (consultaRaw as any).transcricao ? {
+                    id: (consultaRaw as any).transcricao.id,
+                    id_consulta: (consultaRaw as any).transcricao.id_consulta,
+                    texto_gerado: (consultaRaw as any).transcricao.texto_gerado,
+                    data_geracao: (consultaRaw as any).transcricao.data_geracao,
+                    status: (consultaRaw as any).transcricao.status,
                 } : null,
             };
         });
@@ -115,7 +126,10 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 tags: consultaRaw.tags,
                 status: consultaRaw.status,
                 sugestao_IA: consultaRaw.sugestao_IA,
+<<<<<<< HEAD
                 transcricao_id: consultaRaw.transcricao_id,
+=======
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                 updatedAt: new Date(),
             } as any,
         });

@@ -625,6 +625,7 @@ const Agenda: NextPageWithAuth = () => {
                         role="button"
                         tabIndex={0}
                       >
+<<<<<<< HEAD
                         <Box sx={{ 
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
@@ -641,6 +642,10 @@ const Agenda: NextPageWithAuth = () => {
                               maxWidth: '100%'
                             }}
                           >
+=======
+                        <Box>
+                          <Typography className={styles.appointmentPatient}>
+>>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                             {appointment.patient}
                           </Typography>
                         </Box>
