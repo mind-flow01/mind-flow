@@ -5,13 +5,14 @@ import { UserModule } from './modules/user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConsultaModule } from './modules/consulta/consulta.module';
+import { TranscricaoModule } from './modules/transcricao/transcricao.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './modules/auth/guards/jwtAuth.guard';
 import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [ConfigModule.forRoot({
       isGlobal: true, 
-    }), DatabaseModule, UserModule, AuthModule, ConsultaModule],
+    }), DatabaseModule, UserModule, AuthModule, ConsultaModule, TranscricaoModule],
   controllers: [AppController],
   providers: [
     AppService,
