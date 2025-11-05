@@ -42,44 +42,5 @@ export default function Home() {
     }
   };
 
-  return (
-    <Container maxWidth="md" sx={{ py: 6 }}>
-      <Stack spacing={3}>
-        <Typography variant="h3" fontWeight={700}>Mind Flow</Typography>
-        <Typography variant="body1" color="text.secondary">
-          Hub digital para psicólogos: agenda inteligente, transcrição e gestão clínica simples.
-        </Typography>
-        <Stack direction="row" spacing={2}>
-          <Button variant="contained">Entrar</Button>
-          <Button variant="outlined">Criar conta</Button>
-          <Button 
-            variant="contained"
-            color="secondary"
-            onClick={handleApiRequest} 
-            disabled={isLoading || status !== 'authenticated'}
-          >
-            {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Chamar API (/test)'}
-          </Button>
-        </Stack>
 
-        {error && <Alert severity="error">{error}</Alert>}
-        
-        {apiData && (
-          <Paper variant="outlined" sx={{ p: 2, mt: 2, background: '#f5f5f5' }}>
-            <Typography variant="h6" gutterBottom>Resposta da API</Typography>
-            <pre style={{ whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>
-              {JSON.stringify(apiData, null, 2)}
-            </pre>
-          </Paper>
-        )}
-
-        <Paper variant="outlined" sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom>Próximos passos</Typography>
-          <Typography variant="body2" color="text.secondary">
-            Configure autenticação, conexão Supabase e sua agenda.
-          </Typography>
-        </Paper>
-      </Stack>
-    </Container>
-  );
 }

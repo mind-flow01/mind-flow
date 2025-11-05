@@ -29,6 +29,8 @@ import {
   ChevronLeft,
   ChevronRight,
   Add,
+  Edit,
+  Delete,
 } from '@mui/icons-material';
 import styles from '../styles/Agenda.module.css';
 import { consultaService, Consulta } from '../services/consultaService';
@@ -63,6 +65,19 @@ const Agenda: NextPageWithAuth = () => {
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [createLoading, setCreateLoading] = useState(false);
   const [newConsulta, setNewConsulta] = useState({
+    paciente_id: '',
+    horario: '',
+    tipo: '',
+    categoria: '',
+    tags: [] as string[],
+    tagInput: '',
+  });
+  
+  // Estados para edição
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [editLoading, setEditLoading] = useState(false);
+  const [editConsulta, setEditConsulta] = useState({
+    id: '',
     paciente_id: '',
     horario: '',
     tipo: '',
@@ -232,6 +247,115 @@ const Agenda: NextPageWithAuth = () => {
     setNewConsulta({
       ...newConsulta,
       tags: newConsulta.tags.filter(t => t !== tag),
+    });
+  };
+
+  // Funções para editar consulta
+  const handleOpenEditModal = (appointment: Appointment) => {
+    // Encontrar a consulta completa pelo id
+    const consulta = consultas.find(c => c.id === appointment.id);
+    if (consulta) {
+      // Converter o horário para o formato datetime-local
+      const horarioDate = new Date(consulta.horario);
+      const horarioLocal = new Date(horarioDate.getTime() - horarioDate.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 16);
+      
+      // Encontrar o paciente_id correspondente
+      const paciente = pacientes.find(p => p.name === appointment.patient);
+      
+      setEditConsulta({
+        id: consulta.id,
+        paciente_id: consulta.paciente_id || paciente?.id || '',
+        horario: horarioLocal,
+        tipo: consulta.tipo,
+        categoria: consulta.categoria,
+        tags: consulta.tags || [],
+        tagInput: '',
+      });
+      setOpenEditModal(true);
+      setOpenModal(false); // Fechar modal de detalhes
+    }
+  };
+
+  const handleUpdateConsulta = async () => {
+    try {
+      setEditLoading(true);
+      setError(null);
+
+      if (!editConsulta.paciente_id || editConsulta.paciente_id.trim() === '' || editConsulta.paciente_id === 'undefined' || editConsulta.paciente_id === 'null') {
+        setError('Por favor, selecione um paciente');
+        setEditLoading(false);
+        return;
+      }
+
+      if (!editConsulta.horario || !editConsulta.tipo || !editConsulta.categoria) {
+        setError('Preencha todos os campos obrigatórios');
+        setEditLoading(false);
+        return;
+      }
+
+      const token = session?.accessToken as string;
+      const consultaData = {
+        paciente_id: String(editConsulta.paciente_id).trim(),
+        horario: editConsulta.horario,
+        tipo: editConsulta.tipo,
+        categoria: editConsulta.categoria,
+        tags: editConsulta.tags,
+      };
+
+      await consultaService.updateConsulta(editConsulta.id, consultaData, token);
+
+      setOpenEditModal(false);
+      setEditConsulta({
+        id: '',
+        paciente_id: '',
+        horario: '',
+        tipo: '',
+        categoria: '',
+        tags: [],
+        tagInput: '',
+      });
+      await loadConsultas(); // Recarregar consultas
+    } catch (err: any) {
+      setError(err.message || 'Erro ao atualizar consulta');
+      console.error('Erro ao atualizar consulta:', err);
+    } finally {
+      setEditLoading(false);
+    }
+  };
+
+  const handleDeleteConsulta = async (appointmentId: string | number) => {
+    if (!confirm('Tem certeza que deseja excluir este agendamento?')) {
+      return;
+    }
+
+    try {
+      setError(null);
+      const token = session?.accessToken as string;
+      await consultaService.deleteConsulta(String(appointmentId), token);
+      setOpenModal(false); // Fechar modal de detalhes
+      await loadConsultas(); // Recarregar consultas
+    } catch (err: any) {
+      setError(err.message || 'Erro ao excluir consulta');
+      console.error('Erro ao excluir consulta:', err);
+    }
+  };
+
+  const addEditTag = () => {
+    if (editConsulta.tagInput.trim() && !editConsulta.tags.includes(editConsulta.tagInput.trim())) {
+      setEditConsulta({
+        ...editConsulta,
+        tags: [...editConsulta.tags, editConsulta.tagInput.trim()],
+        tagInput: '',
+      });
+    }
+  };
+
+  const removeEditTag = (tag: string) => {
+    setEditConsulta({
+      ...editConsulta,
+      tags: editConsulta.tags.filter(t => t !== tag),
     });
   };
 
@@ -502,9 +626,6 @@ const Agenda: NextPageWithAuth = () => {
                         tabIndex={0}
                       >
                         <Box>
-                          <Typography className={styles.appointmentTime}>
-                            {appointment.time}
-                          </Typography>
                           <Typography className={styles.appointmentPatient}>
                             {appointment.patient}
                           </Typography>
@@ -593,9 +714,27 @@ const Agenda: NextPageWithAuth = () => {
               <Chip label={selectedAppointment.status} color={selectedAppointment.statusColor as any} size="small" />
             </Stack>
           ) : null}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} size="small">Fechar</Button>
+                </DialogContent>
+        <DialogActions sx={{ px: 3, py: 2, gap: 1.5 }}>
+          <Button
+            onClick={() => selectedAppointment && handleDeleteConsulta(selectedAppointment.id)}
+            color="error"
+            startIcon={<Delete />}
+            size="small"
+          >
+            Excluir
+          </Button>
+          <Button
+            onClick={() => selectedAppointment && handleOpenEditModal(selectedAppointment)}
+            variant="outlined"
+            startIcon={<Edit />}
+            size="small"
+          >
+            Editar
+          </Button>
+          <Button onClick={handleCloseModal} size="small" sx={{ ml: 'auto' }}>
+            Fechar
+          </Button>
         </DialogActions>
       </Dialog>
 
@@ -885,6 +1024,287 @@ const Agenda: NextPageWithAuth = () => {
             }}
           >
             {createLoading ? <CircularProgress size={24} /> : 'Criar Consulta'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Modal para editar consulta */}
+      <Dialog
+        open={openEditModal}
+        onClose={() => {
+          setOpenEditModal(false);
+          setEditConsulta({
+            id: '',
+            paciente_id: '',
+            horario: '',
+            tipo: '',
+            categoria: '',
+            tags: [],
+            tagInput: '',
+          });
+        }}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{
+          sx: {
+            borderRadius: 2,
+            marginLeft: { xs: 0, md: '250px' },
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            fontSize: { xs: '1.5rem', sm: '1.75rem' },
+            fontWeight: 600,
+            pb: 2,
+          }}
+        >
+          Editar Consulta
+        </DialogTitle>
+        <DialogContent dividers>
+          <Stack spacing={3.5} sx={{ mt: 1, px: { xs: 0, sm: 1 } }}>
+            <FormControl fullWidth required>
+              <InputLabel
+                id="edit-paciente-select-label"
+                shrink={!!editConsulta.paciente_id}
+                sx={{
+                  fontSize: '1rem',
+                  '&.MuiInputLabel-shrink': {
+                    fontSize: '1rem',
+                  },
+                }}
+              >
+                Paciente
+              </InputLabel>
+              <Select
+                labelId="edit-paciente-select-label"
+                id="edit-paciente-select"
+                value={editConsulta.paciente_id || ''}
+                onChange={(e) => {
+                  const selectedValue = e.target.value;
+                  if (selectedValue !== undefined && selectedValue !== null) {
+                    setEditConsulta((prev) => ({
+                      ...prev,
+                      paciente_id: String(selectedValue),
+                    }));
+                  }
+                }}
+                label="Paciente"
+                disabled={pacientes.length === 0}
+                notched
+                sx={{
+                  fontSize: '1rem',
+                  '& .MuiSelect-select': {
+                    fontSize: '1rem',
+                    py: 1.5,
+                  },
+                }}
+              >
+                {pacientes.length === 0 ? (
+                  <MenuItem disabled value="">
+                    <em>Nenhum paciente cadastrado</em>
+                  </MenuItem>
+                ) : (
+                  pacientes.map((patient) => (
+                    <MenuItem
+                      key={patient.id}
+                      value={String(patient.id)}
+                      sx={{ fontSize: '1rem' }}
+                    >
+                      {patient.name}
+                    </MenuItem>
+                  ))
+                )}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Data e Horário"
+              type="datetime-local"
+              value={editConsulta.horario}
+              onChange={(e) => setEditConsulta({ ...editConsulta, horario: e.target.value })}
+              fullWidth
+              required
+              InputLabelProps={{
+                shrink: true,
+                sx: {
+                  fontSize: '1rem',
+                  '&.MuiInputLabel-shrink': {
+                    fontSize: '1rem',
+                  },
+                },
+              }}
+              inputProps={{
+                sx: {
+                  fontSize: '1rem',
+                  py: 1.5,
+                  '&::-webkit-calendar-picker-indicator': {
+                    cursor: 'pointer',
+                    fontSize: '1.2rem',
+                    marginRight: { xs: 0, sm: 1 },
+                  },
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  fontSize: '1rem',
+                },
+              }}
+            />
+
+            <TextField
+              label="Tipo"
+              value={editConsulta.tipo}
+              onChange={(e) => setEditConsulta({ ...editConsulta, tipo: e.target.value })}
+              fullWidth
+              required
+              placeholder="Ex: Terapia Online, Terapia Presencial"
+              InputLabelProps={{
+                sx: {
+                  fontSize: '1rem',
+                  '&.MuiInputLabel-shrink': {
+                    fontSize: '1rem',
+                  },
+                },
+              }}
+              inputProps={{
+                sx: {
+                  fontSize: '1rem',
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  fontSize: '1rem',
+                },
+              }}
+            />
+
+            <TextField
+              label="Categoria"
+              value={editConsulta.categoria}
+              onChange={(e) => setEditConsulta({ ...editConsulta, categoria: e.target.value })}
+              fullWidth
+              required
+              placeholder="Ex: Consulta inicial, Acompanhamento"
+              InputLabelProps={{
+                sx: {
+                  fontSize: '1rem',
+                  '&.MuiInputLabel-shrink': {
+                    fontSize: '1rem',
+                  },
+                },
+              }}
+              inputProps={{
+                sx: {
+                  fontSize: '1rem',
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  fontSize: '1rem',
+                },
+              }}
+            />
+
+            <Box>
+              <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{
+                  fontSize: '1rem',
+                  fontWeight: 500,
+                  mb: 1.5,
+                }}
+              >
+                Tags
+              </Typography>
+              {editConsulta.tags.length > 0 && (
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  flexWrap="wrap"
+                  sx={{ mb: 2 }}
+                >
+                  {editConsulta.tags.map((tag) => (
+                    <Chip
+                      key={tag}
+                      label={tag}
+                      onDelete={() => removeEditTag(tag)}
+                      size="medium"
+                      sx={{
+                        fontSize: '0.875rem',
+                        height: '32px',
+                      }}
+                    />
+                  ))}
+                </Stack>
+              )}
+              <Stack direction="row" spacing={1.5}>
+                <TextField
+                  placeholder="Adicionar tag"
+                  value={editConsulta.tagInput}
+                  onChange={(e) => setEditConsulta({ ...editConsulta, tagInput: e.target.value })}
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      addEditTag();
+                    }
+                  }}
+                  fullWidth
+                  inputProps={{
+                    sx: {
+                      fontSize: '1rem',
+                    },
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      fontSize: '1rem',
+                    },
+                  }}
+                />
+                <Button
+                  onClick={addEditTag}
+                  variant="outlined"
+                  sx={{
+                    fontSize: '0.875rem',
+                    px: 3,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Adicionar
+                </Button>
+              </Stack>
+            </Box>
+          </Stack>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            px: 3,
+            py: 2,
+            gap: 1.5,
+          }}
+        >
+          <Button
+            onClick={() => setOpenEditModal(false)}
+            disabled={editLoading}
+            sx={{
+              fontSize: '0.9375rem',
+              px: 3,
+            }}
+          >
+            Cancelar
+          </Button>
+          <Button
+            onClick={handleUpdateConsulta}
+            variant="contained"
+            disabled={editLoading}
+            sx={{
+              fontSize: '0.9375rem',
+              px: 3,
+              minWidth: 140,
+            }}
+          >
+            {editLoading ? <CircularProgress size={24} /> : 'Salvar Alterações'}
           </Button>
         </DialogActions>
       </Dialog>

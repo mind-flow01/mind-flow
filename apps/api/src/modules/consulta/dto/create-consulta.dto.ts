@@ -25,5 +25,9 @@ export class CreateConsultaBody {
     @IsOptional()
     @IsEnum(ConsultaStatus)
     status?: ConsultaStatus;
+
+    @IsOptional()
+    @IsString()
+    sugestao_IA?: string;
 }
 

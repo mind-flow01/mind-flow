@@ -11,6 +11,7 @@ export class PrismaConsultaMapper {
             categoria: consulta.categoria,
             tags: consulta.tags,
             status: consulta.status,
+            sugestao_IA: consulta.sugestao_IA,
             created_at: consulta.created_at,
             updatedAt: consulta.updatedAt,
         };
@@ -26,6 +27,7 @@ export class PrismaConsultaMapper {
                 categoria: raw.categoria,
                 tags: raw.tags,
                 status: raw.status as ConsultaStatus,
+                sugestao_IA: (raw as any).sugestao_IA,
                 created_at: raw.created_at,
                 updatedAt: raw.updatedAt,
             }

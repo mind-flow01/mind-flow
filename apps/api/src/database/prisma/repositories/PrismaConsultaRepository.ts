@@ -65,11 +65,12 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                         },
                     },
                 },
-            },
+                transcricao: true,
+            } as any,
             orderBy: { horario: 'asc' },
         });
 
-        return consultas.map((consultaRaw) => {
+        return consultas.map((consultaRaw: any) => {
             const consulta = PrismaConsultaMapper.toDomain(consultaRaw);
             // Garantir que todas as propriedades estejam explicitamente incluídas, pois getters não são copiados no spread
             return {
@@ -80,6 +81,7 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 categoria: consulta.categoria,
                 tags: consulta.tags,
                 status: consulta.status,
+                sugestao_IA: consulta.sugestao_IA,
                 created_at: consulta.created_at,
                 updatedAt: consulta.updatedAt,
                 paciente: consultaRaw.paciente ? {
@@ -87,7 +89,37 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                         name: consultaRaw.paciente.user.name,
                     },
                 } : null,
+                transcricao: (consultaRaw as any).transcricao ? {
+                    id: (consultaRaw as any).transcricao.id,
+                    id_consulta: (consultaRaw as any).transcricao.id_consulta,
+                    texto_gerado: (consultaRaw as any).transcricao.texto_gerado,
+                    data_geracao: (consultaRaw as any).transcricao.data_geracao,
+                    status: (consultaRaw as any).transcricao.status,
+                } : null,
             };
+        });
+    }
+
+    async update(consulta: Consulta): Promise<void> {
+        const consultaRaw = PrismaConsultaMapper.toPrisma(consulta);
+        await this.prisma.consulta.update({
+            where: { id: consulta.id },
+            data: {
+                paciente_id: consultaRaw.paciente_id,
+                horario: consultaRaw.horario,
+                tipo: consultaRaw.tipo,
+                categoria: consultaRaw.categoria,
+                tags: consultaRaw.tags,
+                status: consultaRaw.status,
+                sugestao_IA: consultaRaw.sugestao_IA,
+                updatedAt: new Date(),
+            } as any,
+        });
+    }
+
+    async delete(id: string): Promise<void> {
+        await this.prisma.consulta.delete({
+            where: { id },
         });
     }
 }

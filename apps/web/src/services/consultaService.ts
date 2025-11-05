@@ -1,5 +1,13 @@
 import axios from 'axios';
 
+export interface Transcricao {
+  id: string;
+  id_consulta: string;
+  texto_gerado: string | null;
+  data_geracao: string | null;
+  status: 'PENDENTE' | 'PROCESSANDO' | 'CONCLUIDA' | 'ERRO';
+}
+
 export interface Consulta {
   id: string;
   paciente_id: string;
@@ -11,6 +19,8 @@ export interface Consulta {
   categoria: string;
   tags: string[];
   status: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
+  sugestao_IA?: string | null;
+  transcricao?: Transcricao | null;
   created_at: string;
   updatedAt: string;
 }
@@ -22,6 +32,17 @@ export interface CreateConsultaData {
   categoria: string;
   tags: string[];
   status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
+  sugestao_IA?: string;
+}
+
+export interface UpdateConsultaData {
+  paciente_id?: string;
+  horario?: string; // ISO string
+  tipo?: string;
+  categoria?: string;
+  tags?: string[];
+  status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
+  sugestao_IA?: string;
 }
 
 // Normalizar a URL do backend (remove trailing slash e garante http://)
@@ -111,6 +132,48 @@ export const consultaService = {
         throw new Error('O servidor não respondeu. Verifique se o backend está rodando.');
       } else {
         // Erro ao montar a requisição
+        throw new Error(error.message || 'Erro ao fazer requisição');
+      }
+    }
+  },
+
+  async updateConsulta(id: string, data: UpdateConsultaData, token?: string): Promise<Consulta> {
+    try {
+      const config = token ? {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      } : {};
+      const response = await api.put<Consulta>(`/consultas/${id}`, data, config);
+      
+      return response.data;
+    } catch (error: any) {
+      console.error('Erro ao atualizar consulta:', error);
+      if (error.response) {
+        throw new Error(error.response.data?.message || `Erro ${error.response.status}: ${error.response.statusText}`);
+      } else if (error.request) {
+        throw new Error('O servidor não respondeu. Verifique se o backend está rodando.');
+      } else {
+        throw new Error(error.message || 'Erro ao fazer requisição');
+      }
+    }
+  },
+
+  async deleteConsulta(id: string, token?: string): Promise<void> {
+    try {
+      const config = token ? {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      } : {};
+      await api.delete(`/consultas/${id}`, config);
+    } catch (error: any) {
+      console.error('Erro ao deletar consulta:', error);
+      if (error.response) {
+        throw new Error(error.response.data?.message || `Erro ${error.response.status}: ${error.response.statusText}`);
+      } else if (error.request) {
+        throw new Error('O servidor não respondeu. Verifique se o backend está rodando.');
+      } else {
         throw new Error(error.message || 'Erro ao fazer requisição');
       }
     }
