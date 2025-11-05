@@ -625,8 +625,22 @@ const Agenda: NextPageWithAuth = () => {
                         role="button"
                         tabIndex={0}
                       >
-                        <Box>
-                          <Typography className={styles.appointmentPatient}>
+                        <Box sx={{ 
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          width: '100%'
+                        }}>
+                          <Typography 
+                            className={styles.appointmentPatient}
+                            sx={{
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                              width: '100%',
+                              maxWidth: '100%'
+                            }}
+                          >
                             {appointment.patient}
                           </Typography>
                         </Box>
