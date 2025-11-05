@@ -14,6 +14,7 @@ interface ConsultaSchema {
     categoria: string;
     tags: string[];
     status: ConsultaStatus;
+    sugestao_IA?: string | null;
     created_at: Date;
     updatedAt: Date;
 }
@@ -89,6 +90,13 @@ export class Consulta {
 
     get updatedAt(): Date {
         return this.props.updatedAt;
+    }
+
+    get sugestao_IA(): string | null | undefined {
+        return this.props.sugestao_IA;
+    }
+    set sugestao_IA(sugestao_IA: string | null | undefined) {
+        this.props.sugestao_IA = sugestao_IA;
     }
 }
 
