@@ -53,8 +53,18 @@ export class PrismaConsultaRepository implements ConsultaRepository {
         return consultas.map((consulta) => PrismaConsultaMapper.toDomain(consulta));
     }
 
-    async findAllWithPaciente() {
+    async findAllWithPaciente(psicologoId?: string) {
+        const whereClause: any = {};
+
+        // Se psicologoId for fornecido, filtrar apenas consultas dos pacientes desse psicólogo
+        if (psicologoId) {
+            whereClause.paciente = {
+                psicologo_responsavel_id: psicologoId,
+            };
+        }
+
         const consultas = await this.prisma.consulta.findMany({
+            where: whereClause,
             include: {
                 paciente: {
                     include: {
