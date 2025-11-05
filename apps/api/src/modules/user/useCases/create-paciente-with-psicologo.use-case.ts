@@ -5,7 +5,7 @@ import { Gender, Paciente } from "../entities/Paciente";
 import { UserRepository } from "../repositories/UserRepository";
 import { PacienteRepository } from "../repositories/PacienteRepository";
 import { PrismaService } from "src/database/prisma/prisma.service";
-
+import { createHash } from 'crypto'; 
 interface CreatePacienteWithPsicologoRequest {
     email: string;
     name: string;
@@ -24,7 +24,6 @@ export class CreatePacienteWithPsicologoUseCase {
     ) {}
 
     async execute({ email, name, password, cpf, gender, psicologoId }: CreatePacienteWithPsicologoRequest): Promise<User> {
-        // Verificar se o psicólogo existe
         const psicologo = await this.prisma.psicologo.findUnique({
             where: { userId: psicologoId },
         });
@@ -33,35 +32,34 @@ export class CreatePacienteWithPsicologoUseCase {
             throw new ForbiddenException("Usuário não é um psicólogo ou não foi encontrado.");
         }
 
-        // Verificar se o email já está em uso
-        const userWithSameEmail = await this.userRepository.findByEmail(email);
+        const emailHash = createHash('sha256').update(email).digest('hex');
+        const userWithSameEmail = await this.userRepository.findByEmailHash(emailHash);
         if (userWithSameEmail) {
             throw new ConflictException("Este endereço de email já está em uso.");
         }
 
-        // Verificar se o CPF já está cadastrado
-        const pacienteWithSameCpf = await this.pacienteRepository.findByCpf(cpf);
+        const cpfHash = createHash('sha256').update(cpf).digest('hex');
+       
+        const pacienteWithSameCpf = await this.pacienteRepository.findByCpfHash(cpfHash); 
+
         if (pacienteWithSameCpf) {
             throw new ConflictException("Este CPF já está cadastrado.");
         }
 
-        // Criar o usuário
         const user = new User({
             email,
+            emailHash: emailHash,
             name,
             password: await hash(password, 10),
             role: Role.PACIENTE,
         });
-
-        // Criar o paciente associado ao psicólogo
         const paciente = new Paciente({
             userId: user.id,
             cpf,
             gender,
+            cpfHash: cpfHash,
             psicologo_responsavel_id: psicologoId,
         });
-
-        // Salvar usuário e paciente
         await this.userRepository.create(user, paciente);
 
         return user;
