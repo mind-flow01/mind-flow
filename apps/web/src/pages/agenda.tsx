@@ -530,8 +530,8 @@ const Agenda: NextPageWithAuth = () => {
                   startIcon={<Add />}
                   onClick={() => setOpenCreateModal(true)}
                   sx={{
-                    backgroundColor: '#20B2AA',
-                    '&:hover': { backgroundColor: '#1A9B94' },
+                    backgroundColor: 'var(--primary-color, #00897b)',
+                    '&:hover': { backgroundColor: '#00695c' },
                     minWidth: isMobile ? '100%' : 'auto',
                   }}
                 >

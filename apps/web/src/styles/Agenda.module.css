@@ -38,7 +38,7 @@ Estilos específicos para a página de Agenda
 }
 
 .scheduleButton {
-  background-color: #20B2AA;
+  background-color: var(--primary-color, #00897b);
   color: white;
   text-transform: none;
   border-radius: 8px;
@@ -46,7 +46,7 @@ Estilos específicos para a página de Agenda
 }
 
 .scheduleButton:hover {
-  background-color: #1A9B94;
+  background-color: #00695c;
 }
 
 .calendarGrid {

@@ -177,25 +177,22 @@
 
 /* Botão: Iniciar/Retomar Sessão */
 .sessionButtonStart {
-    /* FORÇANDO COR DE FUNDO AZUL ESCURO (Substitui var(--primary-color)) */
-    background-color: #2E476C; 
-    /* FORÇANDO TEXTO BRANCO, mas usando fallback para escuro se o fundo falhar */
-    color: var(--light-text, #2E476C); 
+    background-color: var(--primary-color, #00897b);
+    color: var(--light-text, #FFFFFF); 
 }
 .sessionButtonStart:hover:not(:disabled) {
-    background-color: var(--secondary-color, #3C5A88); /* Fallback para uma cor escura similar */
+    background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
 
 /* Botão: Pausar Sessão */
 .sessionButtonPause {
-    background-color: var(--accent-color); 
+    background-color: var(--primary-color, #00897b); 
     color: var(--light-text); 
 }
 .sessionButtonPause:hover:not(:disabled) {
-    background-color: var(--accent-color);
-    filter: brightness(1.1);
+    background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
@@ -213,13 +210,11 @@
 
 /* Botão: Finalizar e Salvar / Ir para Revisão */
 .sessionButtonFinalize {
-    /* FORÇANDO COR DE FUNDO VERDE ESCURO (Substitui var(--success-color)) */
-    background-color: #006666; 
-    /* FORÇANDO TEXTO BRANCO, mas usando fallback para escuro se o fundo falhar */
-    color: var(--light-text, #006666); 
+    background-color: var(--primary-color, #00897b);
+    color: var(--light-text, #FFFFFF); 
 }
 .sessionButtonFinalize:hover:not(:disabled) {
-    background-color: var(--success-color-hover, #006666); /* Fallback para uma cor escura similar */
+    background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
