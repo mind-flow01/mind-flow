@@ -101,25 +101,13 @@ model Consulta {
   tags          String[]
   status        ConsultaStatus @default(A_CONFIRMAR)
   sugestao_IA   String?
-<<<<<<< HEAD
   transcricao_id String?
   created_at    DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
-=======
-  created_at    DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-
-  transcricao   Transcricao?
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 }
 
 model Transcricao {
   id            String           @id @default(cuid())
-<<<<<<< HEAD
-=======
-  id_consulta   String           @unique
-  consulta      Consulta         @relation(fields: [id_consulta], references: [id], onDelete: Cascade)
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
   texto_gerado  String?
   data_geracao  DateTime         @default(now())
   status        TranscricaoStatus @default(PENDENTE)

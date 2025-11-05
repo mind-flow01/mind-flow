@@ -29,12 +29,9 @@ export class CreateConsultaBody {
     @IsOptional()
     @IsString()
     sugestao_IA?: string;
-<<<<<<< HEAD
 
     @IsOptional()
     @IsString()
     transcricao_id?: string;
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 }
 

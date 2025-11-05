@@ -92,10 +92,7 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 tags: consulta.tags,
                 status: consulta.status,
                 sugestao_IA: consulta.sugestao_IA,
-<<<<<<< HEAD
                 transcricao_id: consulta.transcricao_id,
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                 created_at: consulta.created_at,
                 updatedAt: consulta.updatedAt,
                 paciente: consultaRaw.paciente ? {
@@ -126,10 +123,7 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 tags: consultaRaw.tags,
                 status: consultaRaw.status,
                 sugestao_IA: consultaRaw.sugestao_IA,
-<<<<<<< HEAD
                 transcricao_id: consultaRaw.transcricao_id,
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                 updatedAt: new Date(),
             } as any,
         });

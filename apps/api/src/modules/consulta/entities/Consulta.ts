@@ -15,10 +15,7 @@ interface ConsultaSchema {
     tags: string[];
     status: ConsultaStatus;
     sugestao_IA?: string | null;
-<<<<<<< HEAD
     transcricao_id?: string | null;
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     created_at: Date;
     updatedAt: Date;
 }
@@ -102,7 +99,6 @@ export class Consulta {
     set sugestao_IA(sugestao_IA: string | null | undefined) {
         this.props.sugestao_IA = sugestao_IA;
     }
-<<<<<<< HEAD
 
     get transcricao_id(): string | null | undefined {
         return this.props.transcricao_id;
@@ -110,7 +106,5 @@ export class Consulta {
     set transcricao_id(transcricao_id: string | null | undefined) {
         this.props.transcricao_id = transcricao_id;
     }
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
 }
 

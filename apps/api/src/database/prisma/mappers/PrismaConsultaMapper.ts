@@ -12,10 +12,7 @@ export class PrismaConsultaMapper {
             tags: consulta.tags,
             status: consulta.status,
             sugestao_IA: consulta.sugestao_IA,
-<<<<<<< HEAD
             transcricao_id: consulta.transcricao_id,
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
             created_at: consulta.created_at,
             updatedAt: consulta.updatedAt,
         };
@@ -32,10 +29,7 @@ export class PrismaConsultaMapper {
                 tags: raw.tags,
                 status: raw.status as ConsultaStatus,
                 sugestao_IA: (raw as any).sugestao_IA,
-<<<<<<< HEAD
                 transcricao_id: (raw as any).transcricao_id,
-=======
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
                 created_at: raw.created_at,
                 updatedAt: raw.updatedAt,
             }

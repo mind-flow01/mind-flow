@@ -21,10 +21,14 @@ export interface Consulta {
   status: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string | null;
 <<<<<<< HEAD
+<<<<<<< HEAD
   transcricao_id?: string | null;
 =======
   transcricao?: Transcricao | null;
 >>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
+=======
+  transcricao_id?: string | null;
+>>>>>>> 2106622 (Criando campo de transcrição na entidade Consulta)
   created_at: string;
   updatedAt: string;
 }
@@ -38,9 +42,13 @@ export interface CreateConsultaData {
   status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
   transcricao_id?: string;
 =======
 >>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
+=======
+  transcricao_id?: string;
+>>>>>>> 2106622 (Criando campo de transcrição na entidade Consulta)
 }
 
 export interface UpdateConsultaData {
@@ -52,9 +60,13 @@ export interface UpdateConsultaData {
   status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
   transcricao_id?: string;
 =======
 >>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
+=======
+  transcricao_id?: string;
+>>>>>>> 2106622 (Criando campo de transcrição na entidade Consulta)
 }
 
 // Normalizar a URL do backend (remove trailing slash e garante http://)
