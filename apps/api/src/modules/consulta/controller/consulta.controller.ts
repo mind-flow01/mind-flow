@@ -1,4 +1,4 @@
-import { Controller, Post, Get, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, Put, Delete, Body, Param, Request } from '@nestjs/common';
 import { ConsultaViewModel } from '../viewModel/ConsultaViewModel';
 import { CreateConsultaBody } from '../dto/create-consulta.dto';
 import { UpdateConsultaBody } from '../dto/update-consulta.dto';
@@ -33,8 +33,9 @@ export class ConsultaController {
   }
 
   @Get()
-  async listConsultas() {
-    const consultas = await this.listConsultasUseCase.execute();
+  async listConsultas(@Request() request: any) {
+    const psicologoId = request.user?.id; // ID do usuário logado (que é o userId do psicólogo)
+    const consultas = await this.listConsultasUseCase.execute(psicologoId);
     return consultas.map((consulta) => {
       if ('paciente' in consulta) {
         return ConsultaViewModel.toHttpWithPaciente(consulta as any);

@@ -8,9 +8,9 @@ export class ListConsultasUseCase {
         private consultaRepository: ConsultaRepository,
     ) {}
 
-    async execute() {
+    async execute(psicologoId?: string) {
         if (this.consultaRepository instanceof PrismaConsultaRepository) {
-            return await this.consultaRepository.findAllWithPaciente();
+            return await this.consultaRepository.findAllWithPaciente(psicologoId);
         }
         
         const consultas = await this.consultaRepository.findAll();
