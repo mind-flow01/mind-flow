@@ -20,7 +20,7 @@ export interface Consulta {
   tags: string[];
   status: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string | null;
-  transcricao?: Transcricao | null;
+  transcricao_id?: string | null;
   created_at: string;
   updatedAt: string;
 }
@@ -33,6 +33,7 @@ export interface CreateConsultaData {
   tags: string[];
   status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string;
+  transcricao_id?: string;
 }
 
 export interface UpdateConsultaData {
@@ -43,6 +44,7 @@ export interface UpdateConsultaData {
   tags?: string[];
   status?: 'CONFIRMADO' | 'CANCELADO' | 'A_CONFIRMAR';
   sugestao_IA?: string;
+  transcricao_id?: string;
 }
 
 // Normalizar a URL do backend (remove trailing slash e garante http://)

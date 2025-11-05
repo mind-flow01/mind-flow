@@ -15,6 +15,7 @@ interface ConsultaSchema {
     tags: string[];
     status: ConsultaStatus;
     sugestao_IA?: string | null;
+    transcricao_id?: string | null;
     created_at: Date;
     updatedAt: Date;
 }
@@ -97,6 +98,13 @@ export class Consulta {
     }
     set sugestao_IA(sugestao_IA: string | null | undefined) {
         this.props.sugestao_IA = sugestao_IA;
+    }
+
+    get transcricao_id(): string | null | undefined {
+        return this.props.transcricao_id;
+    }
+    set transcricao_id(transcricao_id: string | null | undefined) {
+        this.props.transcricao_id = transcricao_id;
     }
 }
 

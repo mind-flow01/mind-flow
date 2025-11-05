@@ -29,5 +29,9 @@ export class CreateConsultaBody {
     @IsOptional()
     @IsString()
     sugestao_IA?: string;
+
+    @IsOptional()
+    @IsString()
+    transcricao_id?: string;
 }
 

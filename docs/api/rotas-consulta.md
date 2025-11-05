@@ -17,7 +17,7 @@ Documentação completa das rotas disponíveis para gerenciar consultas no siste
 
 ## 1. GET /consultas
 
-Lista todas as consultas do sistema, incluindo informações do paciente e transcrição quando disponíveis.
+Lista todas as consultas do sistema, incluindo informações do paciente e transcrições quando disponíveis.
 
 ### Endpoint
 
@@ -54,13 +54,15 @@ Nenhum parâmetro de query necessário.
     "tags": ["primeira-consulta", "ansiedade"],
     "status": "A_CONFIRMAR",
     "sugestao_IA": "Sugerir exercícios de respiração para ansiedade.",
-    "transcricao": {
-      "id": "clxtrans123",
-      "id_consulta": "clx9876543210",
-      "texto_gerado": "Transcrição da sessão...",
-      "data_geracao": "2024-01-15T15:00:00.000Z",
-      "status": "CONCLUIDA"
-    },
+    "transcricoes": [
+      {
+        "id": "clxtrans123",
+        "id_consulta": "clx9876543210",
+        "texto_gerado": "Transcrição da sessão...",
+        "data_geracao": "2024-01-15T15:00:00.000Z",
+        "status": "CONCLUIDA"
+      }
+    ],
     "created_at": "2024-01-10T10:00:00.000Z",
     "updatedAt": "2024-01-10T10:00:00.000Z"
   },
@@ -76,7 +78,7 @@ Nenhum parâmetro de query necessário.
     "tags": ["avaliacao"],
     "status": "CONFIRMADO",
     "sugestao_IA": null,
-    "transcricao": null,
+    "transcricoes": [],
     "created_at": "2024-01-11T09:00:00.000Z",
     "updatedAt": "2024-01-11T09:00:00.000Z"
   }
@@ -97,12 +99,12 @@ Nenhum parâmetro de query necessário.
 | `tags` | string[] | Array de tags |
 | `status` | enum | Status: `CONFIRMADO`, `CANCELADO`, `A_CONFIRMAR` |
 | `sugestao_IA` | string \| null | Sugestão gerada por IA (opcional) |
-| `transcricao` | object \| null | Dados da transcrição (quando disponível) |
-| `transcricao.id` | string | ID da transcrição |
-| `transcricao.id_consulta` | string | ID da consulta relacionada |
-| `transcricao.texto_gerado` | string \| null | Texto da transcrição |
-| `transcricao.data_geracao` | string \| null | Data de geração da transcrição |
-| `transcricao.status` | enum | Status: `PENDENTE`, `PROCESSANDO`, `CONCLUIDA`, `ERRO` |
+| `transcricoes` | array | Array de transcrições (pode estar vazio) |
+| `transcricoes[].id` | string | ID da transcrição |
+| `transcricoes[].id_consulta` | string | ID da consulta relacionada |
+| `transcricoes[].texto_gerado` | string \| null | Texto da transcrição |
+| `transcricoes[].data_geracao` | string \| null | Data de geração da transcrição |
+| `transcricoes[].status` | enum | Status: `PENDENTE`, `PROCESSANDO`, `CONCLUIDA`, `ERRO` |
 | `created_at` | string (ISO 8601) | Data de criação |
 | `updatedAt` | string (ISO 8601) | Data da última atualização |
 
@@ -110,8 +112,8 @@ Nenhum parâmetro de query necessário.
 
 - As consultas são retornadas ordenadas por `horario` (crescente)
 - Inclui informações do paciente quando disponíveis
-- Inclui dados da transcrição quando existir uma transcrição associada
-- Os campos `paciente` e `transcricao` podem ser `null` se não existirem
+- Inclui array de transcrições (pode estar vazio se não houver transcrições)
+- O campo `paciente` pode ser `null` se não existir
 
 ### Exemplo de Uso
 
@@ -239,7 +241,7 @@ Authorization: Bearer {token} (opcional)
 - Se o `status` não for fornecido, o valor padrão será `A_CONFIRMAR`
 - As datas `created_at` e `updatedAt` são definidas automaticamente
 - O campo `sugestao_IA` é opcional e pode ser `null`
-- A consulta criada não possui `transcricao` associada inicialmente
+- A consulta criada não possui `transcricoes` associadas inicialmente (array vazio)
 
 ### Exemplo de Uso
 
@@ -558,8 +560,9 @@ Authorization: Bearer {seu_token_aqui}
 1. **Formato de Data:** Todas as datas devem estar no formato ISO 8601 (ex: `2024-01-15T14:30:00.000Z`)
 
 2. **Relacionamentos:**
-   - Ao deletar uma consulta, a transcrição associada é deletada automaticamente
-   - Ao criar uma consulta, não é possível criar a transcrição no mesmo request
+   - Ao deletar uma consulta, todas as transcrições associadas são deletadas automaticamente (cascade delete)
+   - Ao criar uma consulta, não é possível criar transcrições no mesmo request
+   - Uma consulta pode ter múltiplas transcrições (relação 1:N)
 
 3. **Validações:**
    - O `paciente_id` deve referenciar um paciente existente no sistema
@@ -570,7 +573,7 @@ Authorization: Bearer {seu_token_aqui}
 
 5. **Campos Opcionais:**
    - `sugestao_IA` pode ser `null` ou uma string
-   - `transcricao` só existe se houver uma transcrição associada à consulta
+   - `transcricoes` é sempre um array, mas pode estar vazio se não houver transcrições associadas à consulta
 
 ---
 

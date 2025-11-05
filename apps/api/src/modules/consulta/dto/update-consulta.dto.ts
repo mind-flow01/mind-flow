@@ -30,4 +30,8 @@ export class UpdateConsultaBody {
     @IsOptional()
     @IsString()
     sugestao_IA?: string;
+
+    @IsOptional()
+    @IsString()
+    transcricao_id?: string;
 }

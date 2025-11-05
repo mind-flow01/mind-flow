@@ -18,7 +18,7 @@ export class ConsultaController {
 
   @Post()
   async createConsulta(@Body() body: CreateConsultaBody) {
-    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA } = body;
+    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id } = body;
     const consulta = await this.createConsultaUseCase.execute({ 
       paciente_id, 
       horario: new Date(horario),
@@ -27,6 +27,7 @@ export class ConsultaController {
       tags,
       status,
       sugestao_IA,
+      transcricao_id,
     });
     return ConsultaViewModel.toHttp(consulta);
   }
@@ -44,7 +45,7 @@ export class ConsultaController {
 
   @Put(':id')
   async updateConsulta(@Param('id') id: string, @Body() body: UpdateConsultaBody) {
-    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA } = body;
+    const { paciente_id, horario, tipo, categoria, tags, status, sugestao_IA, transcricao_id } = body;
     const consulta = await this.updateConsultaUseCase.execute({
       id,
       paciente_id,
@@ -54,6 +55,7 @@ export class ConsultaController {
       tags,
       status,
       sugestao_IA,
+      transcricao_id,
     });
     return ConsultaViewModel.toHttp(consulta);
   }
