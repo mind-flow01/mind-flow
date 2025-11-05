@@ -18,8 +18,8 @@ export class PrismaPacienteRepository implements PacienteRepository {
       where: { cpfHash },
     });
 
-        if (!paciente) return null;
-        return PrismaPacienteMapper.toDomain(paciente);
+    if (!paciente) {
+      return null;
     }
 
     return this.mapper.toDomain(paciente);
@@ -70,4 +70,3 @@ export class PrismaPacienteRepository implements PacienteRepository {
     return this.mapper.toDomainWithUser(paciente as any);
   }
 }
-
