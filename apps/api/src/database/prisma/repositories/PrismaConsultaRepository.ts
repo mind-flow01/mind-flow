@@ -3,10 +3,14 @@ import { Consulta } from "src/modules/consulta/entities/Consulta";
 import { ConsultaRepository } from "src/modules/consulta/repositories/ConsultaRepository";
 import { PrismaService } from "../prisma.service";
 import { PrismaConsultaMapper } from "../mappers/PrismaConsultaMapper";
+import { EncryptionService } from "src/modules/services/encryptionService";
 
 @Injectable()
 export class PrismaConsultaRepository implements ConsultaRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private encryptionService: EncryptionService,
+    ) {}
 
     async create(consulta: Consulta): Promise<void> {
         const consultaRaw = PrismaConsultaMapper.toPrisma(consulta);
@@ -53,8 +57,18 @@ export class PrismaConsultaRepository implements ConsultaRepository {
         return consultas.map((consulta) => PrismaConsultaMapper.toDomain(consulta));
     }
 
-    async findAllWithPaciente() {
+    async findAllWithPaciente(psicologoId?: string) {
+        const whereClause: any = {};
+
+        // Se psicologoId for fornecido, filtrar apenas consultas dos pacientes desse psicólogo
+        if (psicologoId) {
+            whereClause.paciente = {
+                psicologo_responsavel_id: psicologoId,
+            };
+        }
+
         const consultas = await this.prisma.consulta.findMany({
+            where: whereClause,
             include: {
                 paciente: {
                     include: {
@@ -86,7 +100,7 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 updatedAt: consulta.updatedAt,
                 paciente: consultaRaw.paciente ? {
                     user: {
-                        name: consultaRaw.paciente.user.name,
+                        name: this.encryptionService.decrypt(consultaRaw.paciente.user.name),
                     },
                 } : null,
             };

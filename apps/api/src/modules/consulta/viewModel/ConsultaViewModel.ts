@@ -42,6 +42,9 @@ export class ConsultaViewModel {
             ? (consulta.updatedAt instanceof Date ? consulta.updatedAt : new Date(consulta.updatedAt))
             : new Date();
 
+        const consultaData: any = consulta;
+        const transcricaoData = consultaData.transcricao;
+
         return {
             id: consulta.id,
             paciente_id: consulta.paciente_id,

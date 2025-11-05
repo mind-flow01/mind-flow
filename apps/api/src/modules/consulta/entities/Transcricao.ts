@@ -70,4 +70,3 @@ export class Transcricao {
         return this.props.updatedAt;
     }
 }
-

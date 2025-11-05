@@ -49,4 +49,3 @@ export class CreateConsultaUseCase {
         return consulta;
     }
 }
-

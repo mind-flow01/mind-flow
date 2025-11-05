@@ -8,6 +8,8 @@ import { UpdateTranscricaoUseCase } from "./useCases/update-transcricao.use-case
 import { DeleteTranscricaoUseCase } from "./useCases/delete-transcricao.use-case";
 import { TranscricaoRepository } from "./repositories/TranscricaoRepository";
 import { PrismaTranscricaoRepository } from "src/database/prisma/repositories/PrismaTranscricaoRepository";
+import { EncryptionService } from "../services/encryptionService";
+import { PrismaTranscricaoMapper } from "src/database/prisma/mappers/PrismaTranscricaoMapper";
 
 @Module({
     imports: [DatabaseModule],
@@ -18,9 +20,12 @@ import { PrismaTranscricaoRepository } from "src/database/prisma/repositories/Pr
         FindTranscricaoUseCase,
         UpdateTranscricaoUseCase,
         DeleteTranscricaoUseCase,
+        EncryptionService,
+        PrismaTranscricaoMapper,
         {
             provide: TranscricaoRepository,
             useClass: PrismaTranscricaoRepository,
+            
         },
     ],
     exports: [TranscricaoRepository],
