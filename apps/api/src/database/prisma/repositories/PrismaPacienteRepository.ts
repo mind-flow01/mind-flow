@@ -6,7 +6,11 @@ import { PrismaPacienteMapper } from "../mappers/PrismaPacienteMapper";
 
 @Injectable()
 export class PrismaPacienteRepository implements PacienteRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private mapper: PrismaPacienteMapper,
+
+    ) {}
 
     async findByCpfHash(cpfHash: string): Promise<Paciente | null> {
     
@@ -18,7 +22,7 @@ export class PrismaPacienteRepository implements PacienteRepository {
       return null;
     }
 
-    return PrismaPacienteMapper.toDomain(paciente);
+    return this.mapper.toDomain(paciente);
   }
 
     async findByPsicologoId(psicologoId: string): Promise<(Paciente & { user: { name: string; email: string; photo_url: string | null } })[]> {
@@ -37,11 +41,33 @@ export class PrismaPacienteRepository implements PacienteRepository {
             },
         });
 
-        // Filtrar pacientes que têm user (não nulo) e mapear
         return pacientes
             .filter(p => p.user !== null)
-            .map(p => PrismaPacienteMapper.toDomainWithUser(p as any));
+            .map(p => this.mapper.toDomainWithUser(p as any));
             
     }
+
+    async findById(userId: string): Promise<Paciente | null> {
+    
+    const paciente = await this.prisma.paciente.findUnique({
+      where: { 
+        userId: userId 
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            photo_url: true,
+          },
+        },
+      },
+    });
+
+    if (!paciente || !paciente.user) {
+      return null;
+    }
+    return this.mapper.toDomainWithUser(paciente as any);
+  }
 }
 

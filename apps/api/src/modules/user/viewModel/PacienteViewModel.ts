@@ -2,7 +2,6 @@ import { Paciente } from "../entities/Paciente";
 
 export class PacienteViewModel {
     static toHttp(paciente: Paciente & { user?: { name: string; email: string; photo_url: string | null }; userId?: string }) {
-        // Garantir que o userId seja acessado corretamente (pode ser getter ou propriedade direta)
         const userId = (paciente as any).userId || paciente.userId;
         
         return {
