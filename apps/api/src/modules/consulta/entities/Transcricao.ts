@@ -7,10 +7,6 @@ export enum TranscricaoStatus {
 
 interface TranscricaoSchema {
     id: string;
-<<<<<<< HEAD
-=======
-    id_consulta: string;
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     texto_gerado: string | null;
     data_geracao: Date;
     status: TranscricaoStatus;
@@ -24,10 +20,6 @@ export class Transcricao {
     constructor(
         props: {
             id: string;
-<<<<<<< HEAD
-=======
-            id_consulta: string;
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
             texto_gerado?: string | null;
             data_geracao?: Date;
             status?: TranscricaoStatus;
@@ -49,16 +41,6 @@ export class Transcricao {
         return this.props.id;
     }
 
-<<<<<<< HEAD
-=======
-    get id_consulta(): string {
-        return this.props.id_consulta;
-    }
-    set id_consulta(id_consulta: string) {
-        this.props.id_consulta = id_consulta;
-    }
-
->>>>>>> 130dc13 (Cria rotas de update e delete de consultas)
     get texto_gerado(): string | null {
         return this.props.texto_gerado;
     }
@@ -88,4 +70,3 @@ export class Transcricao {
         return this.props.updatedAt;
     }
 }
-
