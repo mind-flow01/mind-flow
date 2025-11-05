@@ -3,10 +3,14 @@ import { Consulta } from "src/modules/consulta/entities/Consulta";
 import { ConsultaRepository } from "src/modules/consulta/repositories/ConsultaRepository";
 import { PrismaService } from "../prisma.service";
 import { PrismaConsultaMapper } from "../mappers/PrismaConsultaMapper";
+import { EncryptionService } from "src/modules/services/encryptionService";
 
 @Injectable()
 export class PrismaConsultaRepository implements ConsultaRepository {
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private encryptionService: EncryptionService,
+    ) {}
 
     async create(consulta: Consulta): Promise<void> {
         const consultaRaw = PrismaConsultaMapper.toPrisma(consulta);
@@ -75,8 +79,7 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                         },
                     },
                 },
-                transcricao: true,
-            } as any,
+            },
             orderBy: { horario: 'asc' },
         });
 
@@ -97,15 +100,8 @@ export class PrismaConsultaRepository implements ConsultaRepository {
                 updatedAt: consulta.updatedAt,
                 paciente: consultaRaw.paciente ? {
                     user: {
-                        name: consultaRaw.paciente.user.name,
+                        name: this.encryptionService.decrypt(consultaRaw.paciente.user.name),
                     },
-                } : null,
-                transcricao: (consultaRaw as any).transcricao ? {
-                    id: (consultaRaw as any).transcricao.id,
-                    id_consulta: (consultaRaw as any).transcricao.id_consulta,
-                    texto_gerado: (consultaRaw as any).transcricao.texto_gerado,
-                    data_geracao: (consultaRaw as any).transcricao.data_geracao,
-                    status: (consultaRaw as any).transcricao.status,
                 } : null,
             };
         });

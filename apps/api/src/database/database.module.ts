@@ -15,6 +15,6 @@ import { EncryptionService } from "src/modules/services/encryptionService";
             useClass: PrismaUserRepository
         },
     ],
-    exports: [PrismaService, UserRepository]
+    exports: [PrismaService, UserRepository, EncryptionService]
 })
 export class DatabaseModule {}
