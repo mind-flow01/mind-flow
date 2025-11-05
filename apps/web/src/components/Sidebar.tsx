@@ -59,13 +59,13 @@ const Sidebar: React.FC<SidebarProps> = () => {
                 <span>Pacientes</span>
               </Link>
             </li>
-            {/* Relatórios */}
-            <li className={isActive('/relatorios') ? styles.active : ''}>
+            {/* Relatórios - Temporariamente oculto até implementação */}
+            {/* <li className={isActive('/relatorios') ? styles.active : ''}>
               <Link href="/relatorios" className={styles.navLink} onClick={handleLinkClick}>
                 <FiBarChart2 className={styles.icon} />
                 <span>Relatórios</span>
               </Link>
-            </li>
+            </li> */}
             {/* Configurações */}
             <li className={isActive('/configuracoes') ? styles.active : ''}>
               <Link href="/configuracoes" className={styles.navLink} onClick={handleLinkClick}>
