@@ -1,20 +1,55 @@
 // src/pages/pacientes/index.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import Header from '../../components/Header';
 import styles from '../../styles/ListaPacientes.module.css';
-import { mockPatientsList } from '../../lib/mockData';
 import { FiPlus } from 'react-icons/fi';
 import { NextPageWithAuth } from '@/types/page-auth';
-
 import Modal from '../../components/Modal';
 import CreatePatientForm from '../../components/CreatePatientForm';
+import { pacienteService, Paciente } from '../../services/pacienteService';
 
 const PatientsListPage: NextPageWithAuth = () => {
+  const { data: session } = useSession();
   const [searchTerm, setSearchTerm] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [patients, setPatients] = useState<Paciente[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredPatients = mockPatientsList.filter(patient =>
+ const DEFAULT_AVATAR = '/userDefault.svg';
+
+
+  const fetchPatients = async () => {
+    if (!session) return;
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const token = (session as any)?.accessToken;
+
+      const data = await pacienteService.listPacientes(token);
+      setPatients(data);
+    } catch (err: any) {
+      setError(err.message || "Erro ao buscar pacientes");
+      setPatients([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPatients();
+  }, [session]);
+
+  const handleModalClose = () => {
+    setShowModal(false);
+    fetchPatients(); // atualiza lista após criar paciente
+  };
+
+  const filteredPatients = patients.filter((patient) =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -40,32 +75,51 @@ const PatientsListPage: NextPageWithAuth = () => {
         </button>
       </div>
 
-      <div className={styles.patientList}>
-        {filteredPatients.length > 0 ? (
-          filteredPatients.map(patient => (
-            <Link
-              key={patient.id}
-              href={`/pacientes/${patient.id}`}
-              className={styles.patientCard}
-            >
-              <img src={patient.avatar} alt={patient.name} className={styles.patientAvatar} />
-              <div className={styles.patientInfo}>
-                <h3 className={styles.patientName}>{patient.name}</h3>
-                <p className={styles.lastSession}>Última sessão: {patient.lastSession}</p>
-              </div>
-              <span className={styles.arrowIcon}>→</span>
-            </Link>
-          ))
-        ) : (
-          <p className={styles.noResults}>
-            Nenhum paciente encontrado com "<strong>{searchTerm}</strong>".
-          </p>
-        )}
-      </div>
+      {loading && <div className={styles.noResults}>Carregando pacientes...</div>}
 
-      {/* Modal */}
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <CreatePatientForm />
+      {!loading && error && (
+        <div className={styles.noResults} style={{ color: '#d32f2f' }}>
+          Erro: {error}
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div className={styles.patientList}>
+          {filteredPatients.length > 0 ? (
+            filteredPatients.map((patient) => (
+              <Link
+                key={patient.id}
+                href={`/pacientes/${patient.id}`}
+                className={styles.patientCard}
+              >
+                <img
+                  src={patient.photo_url || DEFAULT_AVATAR}
+                  alt={patient.name}
+                  className={styles.patientAvatar}
+                  onError={(e) =>
+                    ((e.target as HTMLImageElement).src = DEFAULT_AVATAR)
+                  }
+                />
+                <div className={styles.patientInfo}>
+                  <h3>{patient.name}</h3>
+                  <p>Status: {patient.status || 'N/A'}</p>
+                  <p>Email: {patient.email || 'N/A'}</p>
+                </div>
+                <span className={styles.arrowIcon}>→</span>
+              </Link>
+            ))
+          ) : (
+            <p className={styles.noResults}>
+              {searchTerm
+                ? `Nenhum paciente encontrado com "${searchTerm}".`
+                : "Nenhum paciente cadastrado ainda."}
+            </p>
+          )}
+        </div>
+      )}
+
+     <Modal isOpen={showModal} onClose={handleModalClose}>
+        <CreatePatientForm onSuccess={handleModalClose} />
       </Modal>
     </div>
   );

@@ -5,10 +5,10 @@ import styles from '../styles/CreatePatientForm.module.css';
 import { pacienteService } from '../services/pacienteService';
 
 type Props = {
-  onClose?: () => void;
+  onSuccess?: () => void;
 };
 
-const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
+const CreatePatientForm: React.FC<Props> = ({ onSuccess }) => {
   const { data: session } = useSession();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,21 +28,16 @@ const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
     try {
       setLoading(true);
 
-      // 🔐 Obter token do NextAuth (armazenado em cookies)
       const token = (session as any)?.accessToken;
-
       if (!token) {
         alert('Token de autenticação não encontrado. Faça login novamente.');
         return;
       }
 
-      // 🔢 Extrair apenas números do CPF
       const cpfDigits = cpf.replace(/\D/g, '');
 
-      // 🔑 Senha = primeiros 5 dígitos do CPF
       const password = cpfDigits.substring(0, 6);
 
-      // 🎯 Converter gênero do front → valores aceitos pelo backend
       const genderMap: Record<string, 'MASCULINO' | 'FEMININO' | 'OUTRO'> = {
         masculino: 'MASCULINO',
         feminino: 'FEMININO',
@@ -55,28 +50,24 @@ const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
         email,
         password,
         cpf: cpfDigits,
-        gender: genderMap[gender]
+        gender: genderMap[gender],
+        telefone: phone,
       };
-
-      console.log('📦 Enviando payload:', payload);
-      console.log('🔐 Token:', token);
 
       await pacienteService.createPaciente(payload, token);
 
       alert('Paciente cadastrado com sucesso!');
 
-      // Limpa o formulário
       setName('');
       setEmail('');
       setPhone('');
       setCpf('');
       setGender('');
 
-      // Fecha o modal
-      if (onClose) onClose();
+      if (onSuccess) onSuccess(); // 🔥 Fecha modal + recarrega lista
 
     } catch (error: any) {
-      console.error('❌ Erro ao cadastrar:', error);
+      console.error('Erro ao cadastrar:', error);
       alert(error.message || 'Erro ao cadastrar paciente');
     } finally {
       setLoading(false);
@@ -113,6 +104,7 @@ const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
               required
             />
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="phone">Telefone</label>
             <input
@@ -137,6 +129,7 @@ const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
               required
             />
           </div>
+
           <div className={styles.formGroup}>
             <label htmlFor="gender">Gênero</label>
             <select
@@ -149,7 +142,6 @@ const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
               <option value="masculino">Masculino</option>
               <option value="feminino">Feminino</option>
               <option value="outro">Outro</option>
-              <option value="nao-informar">Prefiro não informar</option>
             </select>
           </div>
         </div>
