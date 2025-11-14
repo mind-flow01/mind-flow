@@ -7,16 +7,18 @@ import { mockPatientsList } from '../../lib/mockData';
 import { FiPlus } from 'react-icons/fi';
 import { NextPageWithAuth } from '@/types/page-auth';
 
+import Modal from '../../components/Modal';
+import CreatePatientForm from '../../components/CreatePatientForm';
 
 const PatientsListPage: NextPageWithAuth = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showModal, setShowModal] = useState(false);
 
   const filteredPatients = mockPatientsList.filter(patient =>
     patient.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
-    // Este é o contêiner principal da página (Borda Azul)
     <div className={styles.patientsListPage}>
       <Header title="Meus Pacientes" />
 
@@ -28,21 +30,24 @@ const PatientsListPage: NextPageWithAuth = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <Link href="/pacientes/novo" className={styles.newPatientButton}>
+
+        <button
+          onClick={() => setShowModal(true)}
+          className={styles.newPatientButton}
+        >
           <FiPlus className={styles.buttonIcon} />
           <span>Adicionar Novo Paciente</span>
-        </Link>
+        </button>
       </div>
 
-      {/*
-        ESTRUTURA CORRETA:
-        O .patientList (que deveria ter a borda verde) é um filho DIRETO do .patientsListPage.
-        NÃO deve haver um <div> extra envolvendo este .patientList.
-      */}
       <div className={styles.patientList}>
         {filteredPatients.length > 0 ? (
           filteredPatients.map(patient => (
-            <Link key={patient.id} href={`/pacientes/${patient.id}`} className={styles.patientCard}>
+            <Link
+              key={patient.id}
+              href={`/pacientes/${patient.id}`}
+              className={styles.patientCard}
+            >
               <img src={patient.avatar} alt={patient.name} className={styles.patientAvatar} />
               <div className={styles.patientInfo}>
                 <h3 className={styles.patientName}>{patient.name}</h3>
@@ -52,9 +57,16 @@ const PatientsListPage: NextPageWithAuth = () => {
             </Link>
           ))
         ) : (
-          <p className={styles.noResults}>Nenhum paciente encontrado com "<strong>{searchTerm}</strong>".</p>
+          <p className={styles.noResults}>
+            Nenhum paciente encontrado com "<strong>{searchTerm}</strong>".
+          </p>
         )}
       </div>
+
+      {/* Modal */}
+      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+        <CreatePatientForm />
+      </Modal>
     </div>
   );
 };
