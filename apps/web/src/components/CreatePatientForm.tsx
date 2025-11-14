@@ -1,30 +1,89 @@
 // src/components/CreatePatientForm.tsx
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import styles from '../styles/CreatePatientForm.module.css';
+import { pacienteService } from '../services/pacienteService';
 
-const CreatePatientForm: React.FC = () => {
+type Props = {
+  onClose?: () => void;
+};
+
+const CreatePatientForm: React.FC<Props> = ({ onClose }) => {
+  const { data: session } = useSession();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [cpf, setCpf] = useState('');
   const [gender, setGender] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você faria a chamada para a API
-    console.log('Dados do novo paciente:', { name, email, phone, cpf, gender });
-    
-    // Simula o sucesso e limpa o formulário
-    alert('Paciente cadastrado com sucesso!');
-    setName('');
-    setEmail('');
-    setPhone('');
-    setCpf('');
-    setGender('');
+
+    if (!session) {
+      alert('Você não está autenticado. Faça login novamente.');
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      // 🔐 Obter token do NextAuth (armazenado em cookies)
+      const token = (session as any)?.accessToken;
+
+      if (!token) {
+        alert('Token de autenticação não encontrado. Faça login novamente.');
+        return;
+      }
+
+      // 🔢 Extrair apenas números do CPF
+      const cpfDigits = cpf.replace(/\D/g, '');
+
+      // 🔑 Senha = primeiros 5 dígitos do CPF
+      const password = cpfDigits.substring(0, 6);
+
+      // 🎯 Converter gênero do front → valores aceitos pelo backend
+      const genderMap: Record<string, 'MASCULINO' | 'FEMININO' | 'OUTRO'> = {
+        masculino: 'MASCULINO',
+        feminino: 'FEMININO',
+        outro: 'OUTRO',
+        'nao-informar': 'OUTRO'
+      };
+
+      const payload = {
+        name,
+        email,
+        password,
+        cpf: cpfDigits,
+        gender: genderMap[gender]
+      };
+
+      console.log('📦 Enviando payload:', payload);
+      console.log('🔐 Token:', token);
+
+      await pacienteService.createPaciente(payload, token);
+
+      alert('Paciente cadastrado com sucesso!');
+
+      // Limpa o formulário
+      setName('');
+      setEmail('');
+      setPhone('');
+      setCpf('');
+      setGender('');
+
+      // Fecha o modal
+      if (onClose) onClose();
+
+    } catch (error: any) {
+      console.error('❌ Erro ao cadastrar:', error);
+      alert(error.message || 'Erro ao cadastrar paciente');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    // Usamos o 'card' como o container branco do seu design
     <div className={styles.formCard}>
       <h2>Novo Paciente</h2>
       <p className={styles.subtitle}>Preencha as informações abaixo para cadastrar</p>
@@ -75,6 +134,7 @@ const CreatePatientForm: React.FC = () => {
               placeholder="000.000.000-00"
               value={cpf}
               onChange={(e) => setCpf(e.target.value)}
+              required
             />
           </div>
           <div className={styles.formGroup}>
@@ -83,6 +143,7 @@ const CreatePatientForm: React.FC = () => {
               id="gender"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
+              required
             >
               <option value="" disabled>Selecione...</option>
               <option value="masculino">Masculino</option>
@@ -93,8 +154,8 @@ const CreatePatientForm: React.FC = () => {
           </div>
         </div>
 
-        <button type="submit" className={styles.submitButton}>
-          Cadastrar Paciente
+        <button type="submit" className={styles.submitButton} disabled={loading}>
+          {loading ? 'Cadastrando...' : 'Cadastrar Paciente'}
         </button>
       </form>
     </div>
