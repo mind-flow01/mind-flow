@@ -12,36 +12,47 @@ export class EncryptionService {
     if (!secretKey) {
       throw new Error('ENCRYPTION_KEY é obrigatória no .env');
     }
+    // Gera chave de 32 bytes a partir da chave secreta
     this.key = scryptSync(secretKey, 'salt', 32);
   }
 
+  // ----------------------------
+  // 🔒 Criptografa texto
+  // ----------------------------
   encrypt(text: string): string {
-    const iv = randomBytes(16);
-
+    const iv = randomBytes(16); // Vetor de inicialização aleatório
     const cipher = createCipheriv(this.algorithm, this.key, iv);
+
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
 
+    // Retorna IV + texto criptografado (separado por ":")
     return `${iv.toString('hex')}:${encrypted}`;
   }
 
-  decrypt(encryptedText: string): string {
+  // ----------------------------
+  // 🔓 Descriptografa texto
+  // ----------------------------
+  decrypt(data: string): string {
+    if (!data) return data;
+
     try {
-      const parts = encryptedText.split(':');
-      if (parts.length !== 2) {
-        throw new Error('Formato de texto criptografado inválido');
+      // Valores criptografados AES geralmente têm ":" separando IV e conteúdo
+      if (!data.includes(':')) {
+        return data; // não criptografado → retorna normal
       }
 
-      const iv = Buffer.from(parts[0], 'hex');
-      const encryptedData = parts[1];
+      const [ivHex, encryptedText] = data.split(':');
+      const iv = Buffer.from(ivHex, 'hex');
 
       const decipher = createDecipheriv(this.algorithm, this.key, iv);
-      let decrypted = decipher.update(encryptedData, 'hex', 'utf8');
+      let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
       decrypted += decipher.final('utf8');
+
       return decrypted;
     } catch (error) {
-      console.error('Falha ao descriptografar:', error);
-      throw new Error('Não foi possível descriptografar os dados.');
+      console.warn('⚠️ Valor não descriptografável, retornando como está:', data);
+      return data; // nunca quebra a aplicação
     }
   }
 }
