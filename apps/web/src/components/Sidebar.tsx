@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import styles from '../styles/Sidebar.module.css';
 // Importação dos ícones que vamos usar
 import { FiHome, FiCalendar, FiUsers, FiBarChart2, FiSettings, FiMenu, FiX } from 'react-icons/fi'; // <--- Importar FiMenu e FiX
+import { signOut } from "next-auth/react";
+import { FiLogOut } from "react-icons/fi";
 
 interface SidebarProps {}
 
@@ -75,7 +77,23 @@ const Sidebar: React.FC<SidebarProps> = () => {
             </li>
           </ul>
         </nav>
+                {/* Botão de Logout */}
+        <div className={styles.logoutContainer}>
+          <button
+            className={styles.logoutButton}
+            onClick={() => {
+              setIsOpen(false); // se estiver no mobile, fecha o menu
+              signOut({ callbackUrl: "/login" }); // redireciona para login
+            }}
+          >
+            <FiLogOut className={styles.icon} />
+            <span>Sair</span>
+          </button>
+        </div>
+
       </aside>
+  
+
     </>
   );
 };
