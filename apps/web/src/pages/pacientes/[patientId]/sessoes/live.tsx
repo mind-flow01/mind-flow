@@ -4,7 +4,17 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import styles from '@/styles/SessaoAtiva.module.css';
 // Ícones usados
-import { FiPlayCircle, FiPauseCircle, FiCheckSquare, FiMic, FiChevronsLeft, FiSquare, FiEdit2 } from 'react-icons/fi'; // Adicionei FiEdit2 para o título
+import { 
+  FiPlayCircle, 
+  FiPauseCircle, 
+  FiCheckSquare, 
+  FiMic, 
+  FiChevronsLeft, 
+  FiSquare, 
+  FiEdit2,
+  // FiSparkles FOI REMOVIDO DAQUI
+} from 'react-icons/fi'; 
+import { IoSparkles } from 'react-icons/io5'; // <-- MUDANÇA AQUI: Nova importação
 import { mockPatientsDetails } from '@/lib/mockData';
 
 // Define os possíveis estados da sessão
@@ -40,6 +50,10 @@ const LiveSessionPage: React.FC = () => {
   const [finalTranscript, setFinalTranscript] = useState('');
   const [interimTranscript, setInterimTranscript] = useState('');
   
+  // NOVOS STATES PARA A IA
+  const [isLoadingSuggestion, setIsLoadingSuggestion] = useState(false);
+  const [aiSuggestion, setAiSuggestion] = useState('');
+
   const recognitionRef = useRef<any>(null);
 
   // Controla o cronômetro
@@ -136,6 +150,49 @@ const LiveSessionPage: React.FC = () => {
     stopAndMergeRecording();
   };
 
+  // NOVA FUNÇÃO PARA CHAMAR A API DA IA
+  const handleGenerateSuggestion = async () => {
+    if (notes.trim().length === 0 && finalTranscript.trim().length === 0) {
+      alert('Por favor, tenha anotações ou uma transcrição para gerar sugestões.');
+      return;
+    }
+    
+    setIsLoadingSuggestion(true);
+    setAiSuggestion(''); // Limpa sugestões antigas
+
+    try {
+      const response = await fetch('/api/generate-suggestion', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          transcript: finalTranscript,
+          notes: notes,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Falha na resposta da API');
+      }
+
+      const data = await response.json();
+      
+      if(data.suggestion) {
+        setAiSuggestion(data.suggestion);
+      } else {
+        setAiSuggestion('Nenhuma sugestão retornada ou ocorreu um erro na API.');
+      }
+
+    } catch (error) {
+      console.error('Erro ao buscar sugestão da IA:', error);
+      alert('Ocorreu um erro ao tentar gerar a sugestão da IA.');
+    } finally {
+      setIsLoadingSuggestion(false);
+    }
+  };
+
+
   // Funções de finalização
   const handleFinalizeAndSave = () => {
     if (notes.trim().length === 0) {
@@ -147,6 +204,7 @@ const LiveSessionPage: React.FC = () => {
       patientId,
       notes,
       transcript: finalTranscript,
+      aiSuggestion: aiSuggestion, // Opcional: Salvar a sugestão da IA
       durationSeconds: timeElapsed,
       date: new Date().toISOString(),
     };
@@ -296,6 +354,7 @@ const LiveSessionPage: React.FC = () => {
             />
           </div>
 
+          
           {/* CAIXA DA TRANSCRIÇÃO */}
           <div className={styles.transcriptionBox}>
             <h3>{isRecording ? 'Transcrição em tempo real:' : 'Transcrição Completa (Editável):'}</h3>
@@ -303,9 +362,28 @@ const LiveSessionPage: React.FC = () => {
               className={styles.transcriptionEditable}
               value={displayableTranscript}
               onChange={(e) => setFinalTranscript(e.target.value)}
-              disabled={!isNotesAndTranscriptEditable}
+              disabled={!isNotesAndTranscriptEditable || isRecording} // Desabilitar edição manual enquanto grava
             />
           </div>
+          
+              {/* ==== BLOCO DA IA ==== */}
+          <div className={styles.aiArea}>
+            <button
+              className={styles.aiButton}
+              onClick={handleGenerateSuggestion}
+              disabled={isLoadingSuggestion || !isNotesAndTranscriptEditable}
+            >
+              <IoSparkles /> {/* <-- MUDANÇA AQUI: Ícone trocado */}
+              {isLoadingSuggestion ? 'Analisando...' : 'Gerar Sugestões com IA'}
+            </button>
+            <textarea
+              className={styles.aiSuggestionBox}
+              placeholder="As sugestões da IA aparecerão aqui..."
+              value={aiSuggestion}
+              readOnly
+            />
+          </div>
+          {/* ==== FIM DO BLOCO ==== */}
           
         </main>
       </div>

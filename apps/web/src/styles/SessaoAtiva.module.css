@@ -1,4 +1,4 @@
-/* Estrutura Principal */
+/* ==================== Estrutura Principal ==================== */
 .sessionPage {
     display: flex;
     height: 100vh;
@@ -8,10 +8,11 @@
     overflow: hidden;
 }
 
-/* Painel Lateral de Referência */
+/* ==================== Painel Lateral ==================== */
 .sidebar {
-    width: 320px;
-    background-color: var(--bg-dark); 
+    width: 300px;
+    max-width: 30%;
+    background-color: var(--bg-dark);
     border-right: 1px solid var(--border-light);
     padding: 2rem 1.5rem;
     display: flex;
@@ -19,9 +20,10 @@
     align-items: center;
     text-align: center;
     box-shadow: var(--shadow-sm);
-    flex-shrink: 0; 
-    overflow-y: auto; 
+    flex-shrink: 0;
+    overflow-y: auto;
 }
+
 .backButton {
     align-self: flex-start;
     background: none;
@@ -39,6 +41,7 @@
 .backButton:hover {
     color: var(--secondary-color);
 }
+
 .patientAvatar {
     width: 120px;
     height: 120px;
@@ -48,6 +51,7 @@
     border: 4px solid var(--primary-color);
     box-shadow: var(--shadow-md);
 }
+
 .sidebar h2 {
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
@@ -56,17 +60,18 @@
 .sidebar h2 + p {
     font-size: 1rem;
     color: var(--text-medium);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
+
 .sessionInfo {
     width: 100%;
     text-align: left;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
     border-top: 1px solid var(--border-light);
 }
 .sessionInfo p {
     font-size: 0.95rem;
-    line-height: 1.8;
+    line-height: 1.6;
     color: var(--text-medium);
     margin-bottom: 0.5rem;
 }
@@ -75,50 +80,54 @@
 }
 .statusText {
     font-weight: 600;
-    color: var(--secondary-color); 
+    color: var(--secondary-color);
 }
 
-/* Conteúdo Principal à Direita */
+/* ==================== Conteúdo Principal ==================== */
 .mainContent {
     flex: 1;
     display: flex;
     flex-direction: column;
     padding: 2rem;
-    overflow-y: auto; 
+    overflow-y: auto;
+    min-width: 0; /* importante para o flex não quebrar */
 }
 
-/* Barra de Controle Superior */
+/* ==================== Barra de Controle ==================== */
 .controlsBar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 1rem 1.5rem;
     background-color: var(--bg-medium);
     border-radius: 12px;
     box-shadow: var(--shadow-md);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     gap: 1rem;
-    flex-wrap: wrap; 
+    flex-wrap: wrap;
 }
+
 .timerDisplay {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--text-dark);
-    min-width: 150px;
+    min-width: 120px;
 }
+
 .recordingControls {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    flex-grow: 1; 
+    gap: 1rem;
+    flex-grow: 1;
     justify-content: center;
 }
+
 .consent {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 0.95rem;
+    gap: 0.5rem;
+    font-size: 0.9rem;
     color: var(--text-medium);
     white-space: nowrap;
 }
@@ -127,10 +136,12 @@
     height: 18px;
     accent-color: var(--primary-color);
 }
-/* Agrupador para os botões Iniciar/Pausar/Finalizar */
+
+/* ==================== Botões de Ação ==================== */
 .actionButtons {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 /* Estilos Comuns para Botões de Ação */
@@ -141,11 +152,11 @@
 .sessionButtonPause {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 0.8rem 1.5rem;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
     border-radius: 10px;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.95rem;
     cursor: pointer;
     border: none;
     transition: all 0.2s ease;
@@ -153,7 +164,7 @@
     flex-shrink: 0;
 }
 
-/* Estilo do Botão de Gravação */
+/* Botão de Gravação */
 .recordButton {
     background-color: var(--bg-medium);
     color: var(--accent-color);
@@ -175,59 +186,50 @@
     to { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
 }
 
-/* Botão: Iniciar/Retomar Sessão */
+/* Botões Iniciar/Retomar, Pausar, Encerrar, Finalizar */
 .sessionButtonStart {
-    background-color: var(--primary-color, #00897b);
-    color: var(--light-text, #FFFFFF); 
+    background-color: var(--primary-color);
+    color: var(--light-text);
 }
 .sessionButtonStart:hover:not(:disabled) {
     background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
-
-/* Botão: Pausar Sessão */
 .sessionButtonPause {
-    background-color: var(--primary-color, #00897b); 
-    color: var(--light-text); 
+    background-color: var(--primary-color);
+    color: var(--light-text);
 }
 .sessionButtonPause:hover:not(:disabled) {
     background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
-
-/* Botão: Encerrar e Revisar */
 .sessionButtonEnd {
     background-color: var(--danger-color);
-    color: var(--light-text); 
+    color: var(--light-text);
 }
 .sessionButtonEnd:hover:not(:disabled) {
     background-color: var(--danger-color-hover);
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
-
-/* Botão: Finalizar e Salvar / Ir para Revisão */
 .sessionButtonFinalize {
-    background-color: var(--primary-color, #00897b);
-    color: var(--light-text, #FFFFFF); 
+    background-color: var(--primary-color);
+    color: var(--light-text);
 }
 .sessionButtonFinalize:hover:not(:disabled) {
     background-color: #00695c;
     box-shadow: var(--shadow-md);
     transform: translateY(-2px);
 }
-
-/* Correção para garantir que os ícones do React usem a cor do texto do botão */
 .sessionButtonStart svg, 
 .sessionButtonEnd svg,
 .sessionButtonFinalize svg,
 .sessionButtonPause svg,
 .recordButton svg {
-    color: inherit; 
+    color: inherit;
 }
-
 
 /* Desabilitados */
 .recordButton:disabled,
@@ -241,24 +243,24 @@
     transform: none;
 }
 
-/* Área de Anotações */
+/* ==================== Área de Anotações ==================== */
 .notesArea {
-    height: 350px; 
+    height: 300px;
     background-color: var(--bg-medium);
     border-radius: 12px;
     box-shadow: var(--shadow-md);
     overflow: hidden;
     display: flex;
-    margin-bottom: 2rem; 
+    margin-bottom: 1.5rem;
 }
 .notesArea textarea {
     width: 100%;
     height: 100%;
     border: none;
-    padding: 1.5rem;
+    padding: 1rem 1.5rem;
     font-family: 'Georgia', serif;
-    font-size: 1.1rem;
-    line-height: 1.8;
+    font-size: 1rem;
+    line-height: 1.6;
     resize: none;
     background-color: transparent;
     color: var(--text-dark);
@@ -268,162 +270,137 @@
 }
 .notesArea textarea:focus {
     outline: none;
-    box-shadow: inset 0 0 0 2px rgba(46, 71, 108, 0.2); 
-}
-.notesArea textarea:disabled {
-    background-color: var(--bg-light);
-    cursor: not-allowed;
+    box-shadow: inset 0 0 0 2px rgba(46, 71, 108, 0.2);
 }
 
-/* Caixa da Transcrição */
-.transcriptionBox {
-    flex: 1; 
-    background-color: var(--bg-medium);
-    border-radius: 12px;
-    padding: 1rem 1.5rem;
-    box-shadow: var(--shadow-sm);
+/* ==================== BLOCO DA IA ==================== */
+.aiArea {
     display: flex;
     flex-direction: column;
+    gap: 1rem; /* Mantém o espaço interno entre botão e textarea */
+    margin-top: 1.5rem; /* Espaço entre a transcrição e o bloco da IA */
+    margin-bottom: 1.5rem;
+}
+.aiButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--light-text);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
 }
 
-.transcriptionBox h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
+.aiButton:hover:not(:disabled) {
+    background-color: #00695c;
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
-.transcriptionEditable {
-    flex: 1;
+.aiButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+.aiButton svg {
+    color: inherit;
+}
+
+.aiSuggestionBox {
     width: 100%;
-    min-height: 150px; 
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
-    padding: 1rem;
+    min-height: 120px;
+    max-height: 250px;
+    background-color: var(--bg-medium);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    padding: 1rem 1.5rem;
     font-family: 'Georgia', serif;
     font-size: 1rem;
     line-height: 1.6;
-    resize: none;
-    background-color: transparent;
     color: var(--text-dark);
-    transition: all 0.2s ease;
+    resize: none;
+    overflow-y: auto;
+    border: none;
+}
+
+.aiSuggestionBox::placeholder {
+    color: var(--text-light);
+}
+
+.aiSuggestionBox:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px rgba(46, 71, 108, 0.2);
+}
+
+/* ==================== Caixa de Transcrição ==================== */
+.transcriptionBox {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.transcriptionEditable {
+    width: 100%;
+    min-height: 150px;
+    max-height: 300px;
+    background-color: var(--bg-medium);
+    border-radius: 12px;
+    box-shadow: var(--shadow-md);
+    padding: 1rem 1.5rem;
+    font-family: 'Georgia', serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--text-dark);
+    resize: none;
+    border: none;
+    overflow-y: auto;
 }
 .transcriptionEditable:focus {
     outline: none;
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 1px var(--secondary-color);
-}
-.transcriptionEditable:disabled {
-    background-color: var(--bg-light);
-    cursor: not-allowed;
+    box-shadow: inset 0 0 0 2px rgba(46, 71, 108, 0.2);
 }
 
-/* Centraliza mensagens de carregamento/erro */
-.centeredMessage {
+/* ==================== Título das Anotações ==================== */
+.notesTitle {
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    font-size: 1.5rem;
-    color: var(--text-medium);
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
 }
 
-/* ============================================== */
-/* ========= RESPONSIVIDADE PARA TABLETS E CELULARES (MAX 1024px) ========= */
-/* ============================================== */
-
+/* ==================== Responsividade ==================== */
 @media (max-width: 1024px) {
     .sessionPage {
-        flex-direction: column; 
-        height: auto; 
-        overflow-y: auto; 
+        flex-direction: column;
     }
     .sidebar {
-        width: 100%; 
-        height: auto; 
+        width: 100%;
+        max-width: 100%;
         border-right: none;
-        border-bottom: 1px solid var(--border-light); 
-        padding: 1.5rem; 
-    }
-    .backButton {
-        align-self: flex-start; 
-        margin-bottom: 1rem;
-    }
-    .patientAvatar {
-        width: 90px;
-        height: 90px;
-        margin-bottom: 1rem;
-    }
-    .sidebar h2 {
-        font-size: 1.6rem;
-    }
-    .sidebar h2 + p {
-        margin-bottom: 1rem;
-    }
-    .sessionInfo {
-        padding-top: 1rem;
-    }
-    .mainContent {
-        padding: 1rem; 
-        height: auto;
-    }
-    .controlsBar {
-        flex-direction: column; 
+        border-bottom: 1px solid var(--border-light);
+        flex-direction: row;
         padding: 1rem;
-        margin-bottom: 1rem;
-        align-items: flex-start; 
+        justify-content: flex-start;
+        align-items: center;
         gap: 1rem;
     }
-    .timerDisplay {
-        font-size: 2rem; 
-        width: 100%;
-        text-align: left;
+    .patientAvatar {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0;
     }
-    .recordingControls {
-        width: 100%;
-        flex-wrap: wrap; 
-        gap: 0.75rem;
-        justify-content: space-between; 
-    }
-    .consent {
-        order: 3; 
-        width: 100%;
-        justify-content: flex-start; 
-        font-size: 0.9rem;
-    }
-    .actionButtons {
-        width: 100%; 
-        flex-wrap: wrap;
-        gap: 0.75rem;
-    }
-    .recordButton, 
-    .sessionButtonStart, 
-    .sessionButtonEnd,
-    .sessionButtonFinalize,
-    .sessionButtonPause
-    {
-        flex-grow: 1; 
-        padding: 0.75rem 1rem;
-        font-size: 0.9rem;
-        justify-content: center; 
-    }
-    /* Garantindo consistência nos ícones responsivos */
-    .recordButton svg {
-        color: inherit;
-    }
-
-    .notesArea {
-        height: 50vh; 
-        min-height: 250px;
-        margin-bottom: 1rem;
-    }
-    .notesArea textarea {
-        font-size: 1rem; 
+    .mainContent {
         padding: 1rem;
-    }
-    .transcriptionBox {
-        min-height: 300px;
-    }
-    .transcriptionEditable {
-        min-height: 200px;
     }
 }
