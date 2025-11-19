@@ -73,6 +73,13 @@ export const pacienteService = {
     return response.data;
   },
 
+  async createPaciente(data: { name: string; email: string; password: string; cpf: string; gender: 'MASCULINO' | 'FEMININO' | 'OUTRO' }, token: string) {
+    const response = await api.post('/users/patients', data, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  },
+
   async updatePaciente(id: string, data: Partial<Paciente>, token?: string) {
     const config = token ? { headers: { Authorization: `Bearer ${token}` } } : {};
     const response = await api.patch(`/patients/${id}`, data, config);
