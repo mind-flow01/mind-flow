@@ -16,6 +16,8 @@ import { PrismaPacienteMapper } from "src/database/prisma/mappers/PrismaPaciente
 import { PrismaUserMapper } from "src/database/prisma/mappers/PrismaUserMapper";
 import { PrismaPsicologoMapper } from "src/database/prisma/mappers/PrismaPsicologoMapper";
 import { CreatePacienteUseCase } from "./useCases/createUserUseCase/create-paciente.use-case";
+import { GetUserProfileUseCase } from "./useCases/getUserProfileUseCase/get-user-profile.use-case";
+import { UpdateUserProfileUseCase } from "./useCases/updateUserProfileUseCase/update-user-profile.use-case";
 
 @Module({
     imports: [DatabaseModule],
@@ -27,6 +29,8 @@ import { CreatePacienteUseCase } from "./useCases/createUserUseCase/create-pacie
         ListPacientesUseCase,
         EncryptionService,
         GetPacienteProfileUseCase,
+        GetUserProfileUseCase,
+        UpdateUserProfileUseCase,
         PrismaPacienteMapper,
         PrismaUserMapper,
         PrismaPsicologoMapper,
